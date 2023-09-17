@@ -2,11 +2,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-ReputationMonitoringApplication<demo>",
+            "name": "Spring Boot-ReputationMonitoringApplication<reputation-monitoring-backend>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.fyp.demo.ReputationMonitoringApplication",
-            "projectName": "demo",
+            "projectName": "reputation-monitoring-backend",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

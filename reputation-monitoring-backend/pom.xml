@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fyp</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>reputation-monitoring-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Reputation Monitoring</name>
 	<description>Demo of Reputation Monitoring</description>
