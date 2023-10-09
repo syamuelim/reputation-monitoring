@@ -17,81 +17,81 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fyp.demo.model.entity.Student;
-import com.fyp.demo.repository.StudentRepository;
+import com.fyp.demo.model.entity.KOL;
+import com.fyp.demo.repository.KOLRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Student", description = "Student")
+@Tag(name = "KOL", description = "KOL")
 @RestController	
-@RequestMapping("/api/student/")
-public class StudentController {
+@RequestMapping("/api/kol/")
+public class KOLController {
 
 	@Autowired
-	StudentRepository studentRepository;
+	KOLRepository KOLRepository;
 	@Operation(
-      summary = "Get All Students")
+      summary = "Get All KOLs")
 	@GetMapping("")
-	public ResponseEntity<List<Student>> getAllStudents(@RequestParam(required = false) String name) {
+	public ResponseEntity<List<KOL>> getAllKOLs(@RequestParam(required = false) String name) {
 		try {
-			List<Student> students = new ArrayList<Student>();
+			List<KOL> KOLs = new ArrayList<KOL>();
 
 			if (name == null)
-				studentRepository.findAll().forEach(students::add);
+				KOLRepository.findAll().forEach(KOLs::add);
 			else
-				studentRepository.findByNameContaining(name).forEach(students::add);
+				KOLRepository.findByNameContaining(name).forEach(KOLs::add);
 
-			if (students.isEmpty()) {
+			if (KOLs.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 
-			return new ResponseEntity<>(students, HttpStatus.OK);
+			return new ResponseEntity<>(KOLs, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<Student> getStudentById(@PathVariable("id") long id) {
-		Optional<Student> students = studentRepository.findById(id);
+	public ResponseEntity<KOL> getKOLById(@PathVariable("id") long id) {
+		Optional<KOL> KOLs = KOLRepository.findById(id);
 
-		if (students.isPresent()) {
-			return new ResponseEntity<>(students.get(), HttpStatus.OK);
+		if (KOLs.isPresent()) {
+			return new ResponseEntity<>(KOLs.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@PostMapping("")
-	public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+	@PostMapping("create")
+	public ResponseEntity<KOL> createKOL(@RequestBody KOL KOL) {
 		try {
-			Student _student = studentRepository
-					.save(new Student(student.getName()));
-			return new ResponseEntity<>(_student, HttpStatus.CREATED);
+			KOL _KOL = KOLRepository
+					.save(new KOL(KOL.getName(), KOL.getOtherName()));
+			return new ResponseEntity<>(_KOL, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<Student> updateStudent(@PathVariable("id") long id, @RequestBody Student Student) {
+	public ResponseEntity<KOL> updateKOL(@PathVariable("id") long id, @RequestBody KOL KOL) {
 
-		Optional<Student> students = studentRepository.findById(id);
+		Optional<KOL> KOLs = KOLRepository.findById(id);
 
-		if (students.isPresent()) {
-			Student _student = students.get();
-			_student.setName(Student.getName());
-			return new ResponseEntity<>(studentRepository.save(_student), HttpStatus.OK);
+		if (KOLs.isPresent()) {
+			KOL _KOL = KOLs.get();
+			_KOL.setName(KOL.getName());
+			return new ResponseEntity<>(KOLRepository.save(_KOL), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<HttpStatus> deleteStudent(@PathVariable("id") long id) {
+	public ResponseEntity<HttpStatus> deleteKOL(@PathVariable("id") long id) {
 		try {
-			studentRepository.deleteById(id);
+			KOLRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
