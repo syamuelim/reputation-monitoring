@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fyp.demo.config.Views;
 import com.fyp.demo.model.entity.YoutubeChannel;
+import com.fyp.demo.model.entity.YoutubeVideo;
 import com.fyp.demo.repository.YoutubeChannelRepository;
+import com.fyp.demo.repository.YoutubeVideoRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +34,8 @@ public class YoutubeChannelController {
 
 	@Autowired
 	YoutubeChannelRepository YoutubeChannelRepository;
+	@Autowired
+	YoutubeVideoRepository YoutubeVideoRepository;
 	@Operation(
       summary = "Get All Youtube Channels")
 	@GetMapping("")
@@ -58,6 +64,18 @@ public class YoutubeChannelController {
 
 		if (youtubeChannels.isPresent()) {
 			return new ResponseEntity<>(youtubeChannels.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@JsonView(Views.Public.class)
+	@GetMapping("video/{id}")
+	public ResponseEntity<YoutubeVideo> getYoutubeVideoById(@PathVariable("id") long id) {
+		Optional<YoutubeVideo> videos = YoutubeVideoRepository.findById(id);
+
+		if (videos.isPresent()) {
+			return new ResponseEntity<>(videos.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

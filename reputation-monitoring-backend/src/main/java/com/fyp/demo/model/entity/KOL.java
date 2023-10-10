@@ -22,7 +22,7 @@ public class KOL {
 	private String otherName;
 
 	@Column(name = "instagram_id")
-	private int instagramId;
+	private Integer instagramId;
 
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "youtube_id")
