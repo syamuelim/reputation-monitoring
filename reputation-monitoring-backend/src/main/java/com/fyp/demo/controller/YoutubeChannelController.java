@@ -69,7 +69,6 @@ public class YoutubeChannelController {
 		}
 	}
 	
-	@JsonView(Views.Public.class)
 	@GetMapping("video/{id}")
 	public ResponseEntity<YoutubeVideo> getYoutubeVideoById(@PathVariable("id") long id) {
 		Optional<YoutubeVideo> videos = YoutubeVideoRepository.findById(id);
