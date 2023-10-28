@@ -1,5 +1,7 @@
 package com.fyp.demo.controller;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fyp.demo.config.Views;
 import com.fyp.demo.model.entity.YoutubeChannel;
 import com.fyp.demo.model.entity.YoutubeVideo;
+import com.fyp.demo.model.entity.YouTubeAPI.YoutubeApiHelper;
 import com.fyp.demo.repository.YoutubeChannelRepository;
 import com.fyp.demo.repository.YoutubeVideoRepository;
+import com.google.api.services.youtube.model.ChannelListResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,6 +81,18 @@ public class YoutubeChannelController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@GetMapping("/external/channel")
+	public ResponseEntity<ChannelListResponse> queryYoutbeChannel() {
+
+		ChannelListResponse result;
+		try {
+			result = YoutubeApiHelper.getChannelName(null);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (GeneralSecurityException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 
 	@PostMapping("create")
 	public ResponseEntity<YoutubeChannel> createYoutubeChannel(@RequestBody YoutubeChannel youtubeChannel) {
@@ -114,4 +128,6 @@ public class YoutubeChannelController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
 }
