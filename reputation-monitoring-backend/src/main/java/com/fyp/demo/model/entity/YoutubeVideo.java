@@ -23,7 +23,7 @@ public class YoutubeVideo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     @JsonBackReference
-    @JsonView(Views.Public.class)
+	@EqualsAndHashCode.Exclude
     YoutubeChannel youtubeChannel;
 
 	@Column(name = "event_id")

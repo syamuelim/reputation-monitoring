@@ -21,10 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fyp.demo.model.entity.YoutubeChannel;
 import com.fyp.demo.model.entity.YoutubeVideo;
+import com.fyp.demo.model.entity.YouTubeAPI.YouTubeServiceState;
 import com.fyp.demo.model.entity.YouTubeAPI.YoutubeApiHelper;
+import com.fyp.demo.model.request.YoutubeAPIFilterRequest;
 import com.fyp.demo.repository.YoutubeChannelRepository;
 import com.fyp.demo.repository.YoutubeVideoRepository;
 import com.google.api.services.youtube.model.ChannelListResponse;
+import com.google.api.services.youtube.model.CommentThreadListResponse;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.VideoListResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,6 +43,12 @@ public class YoutubeChannelController {
 	YoutubeChannelRepository YoutubeChannelRepository;
 	@Autowired
 	YoutubeVideoRepository YoutubeVideoRepository;
+    YouTubeServiceState youTubeServiceState;
+
+	public YoutubeChannelController() throws GeneralSecurityException, IOException {
+		this.youTubeServiceState = YoutubeApiHelper.getService();
+	}
+
 	@Operation(
       summary = "Get All Youtube Channels")
 	@GetMapping("")
@@ -82,12 +93,89 @@ public class YoutubeChannelController {
 		}
 	}
 	
-	@GetMapping("/external/channel")
-	public ResponseEntity<ChannelListResponse> queryYoutbeChannel() {
-
+	@GetMapping("/external/channel/Details")
+	public ResponseEntity<ChannelListResponse> queryYoutbeChannelDetails( 
+		@RequestParam String keyword,
+		@RequestParam(required = false, defaultValue = "10") Long maxResult,
+		@RequestParam(required = false) String  createdFrom,
+		@RequestParam(required = false) String  createdTo 
+	) {
 		ChannelListResponse result;
+		YoutubeAPIFilterRequest request = new YoutubeAPIFilterRequest(keyword, maxResult, createdFrom, createdTo);
 		try {
-			result = YoutubeApiHelper.getChannelName(null);
+			result = YoutubeApiHelper.getChannelName(youTubeServiceState, request);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (GeneralSecurityException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}	
+
+	@GetMapping("/external/channel")
+	public ResponseEntity<SearchListResponse> queryYoutbeChannel( 
+		@RequestParam String keyword,
+		@RequestParam(required = false, defaultValue = "10") Long maxResult,
+		@RequestParam(required = false) String  createdFrom,
+		@RequestParam(required = false) String  createdTo 
+	) {
+		SearchListResponse result;
+		YoutubeAPIFilterRequest request = new YoutubeAPIFilterRequest(keyword, maxResult, createdFrom, createdTo);
+		try {
+			result = YoutubeApiHelper.searchChannel(youTubeServiceState, request);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (GeneralSecurityException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/external/channel/videos")
+	public ResponseEntity<SearchListResponse> queryVideosByChannelId( 
+
+		@RequestParam String keyword,
+		@RequestParam(required = false, defaultValue = "10") Long maxResult,
+		@RequestParam(required = false) String  createdFrom,
+		@RequestParam(required = false) String  createdTo 
+	) {
+		SearchListResponse result;
+		YoutubeAPIFilterRequest request = new YoutubeAPIFilterRequest(keyword, maxResult, createdFrom, createdTo);
+		try {
+			result = YoutubeApiHelper.searchVideoByChannelId(youTubeServiceState, request);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (GeneralSecurityException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/external/channel/video/Id")
+	public ResponseEntity<VideoListResponse> queryVideosByVideoId( 
+
+		@RequestParam String keyword,
+		@RequestParam(required = false, defaultValue = "10") Long maxResult,
+		@RequestParam(required = false) String  createdFrom,
+		@RequestParam(required = false) String  createdTo 
+	) {
+		VideoListResponse result;
+		YoutubeAPIFilterRequest request = new YoutubeAPIFilterRequest(keyword, maxResult, createdFrom, createdTo);
+		try {
+			result = YoutubeApiHelper.searchVideoByVideoId(youTubeServiceState, request);
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (GeneralSecurityException | IOException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}	
+	
+	@GetMapping("/external/channel/comments")
+	public ResponseEntity<CommentThreadListResponse> queryComments( 
+
+		@RequestParam String keyword,
+		@RequestParam Boolean IsByChannelId,
+		@RequestParam(required = false, defaultValue = "10") Long maxResult,
+		@RequestParam(required = false) String  createdFrom,
+		@RequestParam(required = false) String  createdTo
+	) {
+		CommentThreadListResponse result;
+		YoutubeAPIFilterRequest request = new YoutubeAPIFilterRequest(keyword, maxResult, createdFrom, createdTo);
+		try {
+			result = YoutubeApiHelper.searchComment(youTubeServiceState, request, IsByChannelId);
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (GeneralSecurityException | IOException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
