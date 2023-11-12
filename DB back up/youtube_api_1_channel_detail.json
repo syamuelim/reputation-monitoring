@@ -1,0 +1,61 @@
+{
+  "etag": "nPDkM0jG6GKr34OGEP3ulFiJ9UA",
+  "items": [
+    {
+      "contentDetails": {
+        "relatedPlaylists": {
+          "likes": "",
+          "uploads": "UUXnWjmQ8BDE0sDIeZLK5yJg"
+        }
+      },
+      "contentOwnerDetails": {},
+      "etag": "yD19dzfpm2qku1GtnZaMCdBGHtI",
+      "id": "UCXnWjmQ8BDE0sDIeZLK5yJg",
+      "kind": "youtube#channel",
+      "snippet": {
+        "country": "HK",
+        "customUrl": "@dim_cook_guide",
+        "defaultLanguage": "zh-HK",
+        "description": "逢星期一三五 或日\n簡單甜品小食輕鬆煮\n\n食譜:\nhttp://dimcookguide.com\nFacebook:\nhttps://goo.gl/Fo5hMy\nInstagram:\nhttps://goo.gl/4mbHfZ\n\nYoutube channel:\n點COOKGUIDE: https://goo.gl/ktnACG\n搞神馬: https://goo.gl/MxB7FX",
+        "localized": {
+          "description": "逢星期一三五 或日\n簡單甜品小食輕鬆煮\n\n食譜:\nhttp://dimcookguide.com\nFacebook:\nhttps://goo.gl/Fo5hMy\nInstagram:\nhttps://goo.gl/4mbHfZ\n\nYoutube channel:\n點COOKGUIDE: https://goo.gl/ktnACG\n搞神馬: https://goo.gl/MxB7FX",
+          "title": "點 Cook Guide"
+        },
+        "publishedAt": {
+          "value": 1391787844000,
+          "dateOnly": false,
+          "timeZoneShift": 0
+        },
+        "thumbnails": {
+          "default": {
+            "height": 88,
+            "url": "https://yt3.ggpht.com/zXUvIowHqBDTU0IGGOtnS6dbhRft54xLrmsYKNqBmtpugYWPIBBgo29fnpIw2qIIA-qtE97qzBM=s88-c-k-c0x00ffffff-no-rj",
+            "width": 88
+          },
+          "high": {
+            "height": 800,
+            "url": "https://yt3.ggpht.com/zXUvIowHqBDTU0IGGOtnS6dbhRft54xLrmsYKNqBmtpugYWPIBBgo29fnpIw2qIIA-qtE97qzBM=s800-c-k-c0x00ffffff-no-rj",
+            "width": 800
+          },
+          "medium": {
+            "height": 240,
+            "url": "https://yt3.ggpht.com/zXUvIowHqBDTU0IGGOtnS6dbhRft54xLrmsYKNqBmtpugYWPIBBgo29fnpIw2qIIA-qtE97qzBM=s240-c-k-c0x00ffffff-no-rj",
+            "width": 240
+          }
+        },
+        "title": "點 Cook Guide"
+      },
+      "statistics": {
+        "hiddenSubscriberCount": false,
+        "subscriberCount": 1120000,
+        "videoCount": 1515,
+        "viewCount": 215716450
+      }
+    }
+  ],
+  "kind": "youtube#channelListResponse",
+  "pageInfo": {
+    "resultsPerPage": 5,
+    "totalResults": 1
+  }
+}
