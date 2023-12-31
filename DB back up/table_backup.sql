@@ -103,6 +103,20 @@ CREATE TABLE config."media_type" (
   "description" VARCHAR (128)
 );
 
+DROP TABLE IF EXISTS "session";
+CREATE TABLE "session" (
+  "id" integer primary key,
+  "session" varchar(128),
+  "user_name" varchar(128),
+  "expired_datetime" timestamp
+);
+
+DROP TABLE IF EXISTS "watching";
+CREATE TABLE "watching" (
+  "id" integer primary key,
+  "session_id" integer,
+  "kol_id" integer
+);
 
 INSERT INTO public.kol
 (id, "name", other_name, youtube_id, instagram_id)
