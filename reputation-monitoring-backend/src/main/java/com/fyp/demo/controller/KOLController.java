@@ -53,7 +53,7 @@ public class KOLController {
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<KOL> getKOLById(@PathVariable("id") long id) {
+	public ResponseEntity<KOL> getKOLById(@PathVariable("id") Integer id) {
 		Optional<KOL> KOLs = KOLRepository.findById(id);
 
 		if (KOLs.isPresent()) {
@@ -75,7 +75,7 @@ public class KOLController {
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<KOL> updateKOL(@PathVariable("id") long id, @RequestBody KOL KOL) {
+	public ResponseEntity<KOL> updateKOL(@PathVariable("id") Integer id, @RequestBody KOL KOL) {
 
 		Optional<KOL> KOLs = KOLRepository.findById(id);
 
@@ -89,7 +89,7 @@ public class KOLController {
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<HttpStatus> deleteKOL(@PathVariable("id") long id) {
+	public ResponseEntity<HttpStatus> deleteKOL(@PathVariable("id") Integer id) {
 		try {
 			KOLRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

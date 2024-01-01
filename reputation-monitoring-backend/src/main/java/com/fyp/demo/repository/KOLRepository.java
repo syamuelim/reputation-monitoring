@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fyp.demo.model.entity.KOL;
 
-public interface KOLRepository extends JpaRepository<KOL, Long> {
+public interface KOLRepository extends JpaRepository<KOL, Integer> {
   List<KOL> findByNameContaining(String name);
 }
