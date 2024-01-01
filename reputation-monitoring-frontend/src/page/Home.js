@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
 
   //#region effect
   useEffect(() => {
-    //loadStudents();
+    loadStudents();
   }, []);
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const HomeScreen = ({ navigation }) => {
         <Text>Home Page</Text>
         {students.map((student, index) => (
           <View key={index}>
-            {/* <ListItem 
+            <ListItem 
                 title= {'Id: ' +student.id} 
                 secondaryText={'Name: ' + student.name}
-            /> */}
+            />
           </View>
         ))}
       </View>

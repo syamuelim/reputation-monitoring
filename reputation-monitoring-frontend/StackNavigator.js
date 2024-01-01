@@ -4,26 +4,26 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./src/page/Home";
 import FacebookLoginScreen from "./src/page/FacebookLogin";
+import Footer from "./src/component/footer";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false,
+				footer: {Footer},
+			}}
+		>
 			<Stack.Screen
 				name="facebook"
-				options={{
-					headerShown: false,
-				}}
 				component={FacebookLoginScreen}
 			/>
-				<Stack.Screen
-					name="*"
-					options={{
-						headerShown: false,
-					}}
-					component={HomeScreen}
-				/>
+			<Stack.Screen
+				name="home"
+				component={HomeScreen}
+			/>
 			{/* <Navbar /> */}
 		</Stack.Navigator>
 	);

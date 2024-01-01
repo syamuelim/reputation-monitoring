@@ -2,7 +2,7 @@ package com.fyp.demo.model.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*; 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,24 +20,27 @@ public class Reputation {
 
 	@Column(name = "kol_id")
 	private Integer kolId;
-	
-    @Column(name = "rating")
+
+	@Column(name = "rating")
 	private double rating;
 
 	@Column(name = "rating_attribute_id")
 	private Double ratingAttributeId;
 
-    @Column(name = "status")
-    private String status;
+	@Column(name = "status")
+	private String status;
 
-    @Column(name ="created_at")
-    private LocalDateTime createdAt;
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
+	@Column(name = "reputation_at")
+	private LocalDateTime reputationAt;
 
 	public Reputation(int kolId, double rating, double ratingAttributeId) {
-		this.kolId =kolId;
-        this.rating =rating;
+		this.kolId = kolId;
+		this.rating = rating;
 		this.ratingAttributeId = ratingAttributeId;
-        this.status =  "ACTIVE";
-        this.createdAt = LocalDateTime.now();
+		this.status = "ACTIVE";
+		this.createdAt = LocalDateTime.now();
 	}
 }
