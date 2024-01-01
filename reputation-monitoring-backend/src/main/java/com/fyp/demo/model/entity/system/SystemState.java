@@ -1,13 +1,14 @@
 package com.fyp.demo.model.entity.system;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Component
+@Service
 public class SystemState {
     Integer sessionId;
 
@@ -18,7 +19,20 @@ public class SystemState {
         this.sessionId = sessionId;
     }
 
+    @PostConstruct
+    public void init() {
+        connect();
+    }
+
+    public void connect() {
+
+    }
+
     public void setSessionId(Integer sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public Integer getSessionId() {
+        return this.sessionId;
     }
 }
