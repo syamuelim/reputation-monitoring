@@ -176,3 +176,41 @@ VALUES(11, 1, 5, 'ACTIVE', now(), '2023-11-01T00:00:00');
 INSERT INTO public.reputation
 (id, kol_id, rating, status, created_at, reputation_at)
 VALUES(12, 1, 3, 'ACTIVE', now(), '2023-12-01T00:00:00');
+
+
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(13, 54, 5, 'ACTIVE', now(), '2023-01-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at , reputation_at)
+VALUES(14, 54, 2, 'ACTIVE', now(), '2023-02-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(15, 54, 5, 'ACTIVE', now(), '2023-03-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at , reputation_at)
+VALUES(16, 54, 3, 'ACTIVE', now(), '2023-04-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(17, 54, 4, 'ACTIVE', now(), '2023-05-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(18, 54, 5, 'ACTIVE', now(), '2023-06-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(19, 54, 5, 'ACTIVE', now(), '2023-07-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(20, 54, 4, 'ACTIVE', now(), '2023-08-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(21, 54, 5, 'ACTIVE', now(), '2023-09-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(22, 54, 2, 'ACTIVE', now(), '2023-10-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(23, 54, 2, 'ACTIVE', now(), '2023-11-01T00:00:00');
+INSERT INTO public.reputation
+(id, kol_id, rating, status, created_at, reputation_at)
+VALUES(24, 54, 1, 'ACTIVE', now(), '2023-12-01T00:00:00');

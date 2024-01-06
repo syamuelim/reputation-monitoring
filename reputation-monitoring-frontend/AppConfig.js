@@ -1,4 +1,5 @@
-export const baseUrl = "http://localhost:8080/"
+// export const baseUrl = "http://localhost:8080/"
+export const baseUrl = "http://192.168.1.4:8080/"
 export const facebookUrl = "https://graph.facebook.com/v18.0/"
 export const instagramUrl = ""
 
@@ -7,7 +8,8 @@ export const urlLinking = {
         screens: {
             home: "home",
             facebook: "facebook",
-            footer: "footer"
+            footer: "footer",
+            chart: "chart"
         },
     },
 };
