@@ -15,7 +15,7 @@ const FacebookLoginScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
 
   const [request, response, promptAsync] = Facebook.useAuthRequest({
-    clientId: "652157000425074",
+    clientId: "706729161328080",
     scopes: facebookPermission,
     configId: "3654644834792585"
   })

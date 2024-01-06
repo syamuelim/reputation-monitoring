@@ -5,6 +5,7 @@
       "etag": "IWwGwpTcTrd6aszeolB6mlJJyBY",
       "id": "p1D7pg-vtf0",
       "kind": "youtube#video",
+      "title": "The Weeknd - Like A God (Music from the HBO Original Series The Idol)",
       "snippet": {
         "categoryId": "10",
         "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ",
@@ -47,7 +48,6 @@
             "width": 640
           }
         },
-        "title": "The Weeknd - Like A God (Music from the HBO Original Series The Idol)"
       },
       "statistics": {
         "commentCount": 825,

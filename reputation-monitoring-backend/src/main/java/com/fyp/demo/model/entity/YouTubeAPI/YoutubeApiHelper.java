@@ -161,8 +161,8 @@ public class YoutubeApiHelper {
                         // must be order by time (default)
                         YouTube.CommentThreads.List request = youTubeServiceState.youtubeService.commentThreads()
                                 .list(Arrays.asList("snippet,replies"));
-                        CommentThreadListResponse response = request.setAllThreadsRelatedToChannelId("UCXDQojAB3faJeGnSUXZBGXQ")
-                                .setMaxResults(25L)
+                        CommentThreadListResponse response = request.setAllThreadsRelatedToChannelId(filterRequest.keyword)
+                                .setMaxResults(filterRequest.maxResult)
                                 .setOrder("time")
                                 .execute();
                         return response;
