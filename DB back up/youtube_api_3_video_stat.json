@@ -1,0 +1,72 @@
+{
+  "etag": "h_86Wx7T6I5Ao071dW4QPKsRGmc",
+  "items": [
+    {
+      "etag": "IWwGwpTcTrd6aszeolB6mlJJyBY",
+      "id": "p1D7pg-vtf0",
+      "kind": "youtube#video",
+      "snippet": {
+        "categoryId": "10",
+        "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ",
+        "channelTitle": "The Weeknd",
+        "description": "Available to stream + download now: http://theweeknd.co/TheIdolEpisode5Pt1 \n\nFollow The Weeknd:\nhttps://twitter.com/theweeknd\nhttps://instagram.com/theweeknd\nhttps://facebook.com/theweeknd\nhttps://tiktok.com/@theweeknd\nhttps://triller.co/@theweeknd\nhttps://story.snapchat.com/@theweeknd\nhttps://www.theweeknd.com\n\n#TheWeeknd #TheIdol",
+        "liveBroadcastContent": "none",
+        "localized": {
+          "description": "Available to stream + download now: http://theweeknd.co/TheIdolEpisode5Pt1 \n\nFollow The Weeknd:\nhttps://twitter.com/theweeknd\nhttps://instagram.com/theweeknd\nhttps://facebook.com/theweeknd\nhttps://tiktok.com/@theweeknd\nhttps://triller.co/@theweeknd\nhttps://story.snapchat.com/@theweeknd\nhttps://www.theweeknd.com\n\n#TheWeeknd #TheIdol",
+          "title": "The Weeknd - Like A God (Music from the HBO Original Series The Idol)"
+        },
+        "publishedAt": {
+          "value": 1688672692000,
+          "dateOnly": false,
+          "timeZoneShift": 0
+        },
+        "thumbnails": {
+          "default": {
+            "height": 90,
+            "url": "https://i.ytimg.com/vi/p1D7pg-vtf0/default.jpg",
+            "width": 120
+          },
+          "high": {
+            "height": 360,
+            "url": "https://i.ytimg.com/vi/p1D7pg-vtf0/hqdefault.jpg",
+            "width": 480
+          },
+          "maxres": {
+            "height": 720,
+            "url": "https://i.ytimg.com/vi/p1D7pg-vtf0/maxresdefault.jpg",
+            "width": 1280
+          },
+          "medium": {
+            "height": 180,
+            "url": "https://i.ytimg.com/vi/p1D7pg-vtf0/mqdefault.jpg",
+            "width": 320
+          },
+          "standard": {
+            "height": 480,
+            "url": "https://i.ytimg.com/vi/p1D7pg-vtf0/sddefault.jpg",
+            "width": 640
+          }
+        },
+        "title": "The Weeknd - Like A God (Music from the HBO Original Series The Idol)"
+      },
+      "statistics": {
+        "commentCount": 825,
+        "favoriteCount": 0,
+        "likeCount": 26597,
+        "viewCount": 1301738
+      },
+      "topicDetails": {
+        "topicCategories": [
+          "https://en.wikipedia.org/wiki/Hip_hop_music",
+          "https://en.wikipedia.org/wiki/Music",
+          "https://en.wikipedia.org/wiki/Pop_music"
+        ]
+      }
+    }
+  ],
+  "kind": "youtube#videoListResponse",
+  "pageInfo": {
+    "resultsPerPage": 1,
+    "totalResults": 1
+  }
+}

@@ -11,7 +11,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "youtube_video")
 public class YoutubeVideo {

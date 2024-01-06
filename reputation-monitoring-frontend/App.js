@@ -5,13 +5,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
 
+import {urlLinking} from "./AppConfig.js";
 import axios from 'axios';
 
 export default function App() {
 	return (
 		<PaperProvider>
 			<SafeAreaProvider>
-				<NavigationContainer>
+				<NavigationContainer linking={urlLinking}>
 					<StackNavigator />
 				</NavigationContainer>
 			</SafeAreaProvider>

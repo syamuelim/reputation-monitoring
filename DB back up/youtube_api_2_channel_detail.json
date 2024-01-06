@@ -1,0 +1,60 @@
+{
+  "etag": "MQHyXkUMgH6jHHrA2IQtO6br6Uk",
+  "items": [
+    {
+      "contentDetails": {
+        "relatedPlaylists": {
+          "likes": "",
+          "uploads": "UUiJnCs2K5gP-DXnMxlstC9A"
+        }
+      },
+      "contentOwnerDetails": {},
+      "etag": "zHHaBwcmEZCDzSbiVFEa4-oItPQ",
+      "id": "UCiJnCs2K5gP-DXnMxlstC9A",
+      "kind": "youtube#channel",
+      "snippet": {
+        "country": "HK",
+        "customUrl": "@100mosthongkong",
+        "description": "全力以赴　毛牌仲好\n\n【毛記電視】\nInstagram：100mosthk／TV_Most\nFacebook： 100毛／ 毛記電視\nYouTube：毛記電視\n\n",
+        "localized": {
+          "description": "全力以赴　毛牌仲好\n\n【毛記電視】\nInstagram：100mosthk／TV_Most\nFacebook： 100毛／ 毛記電視\nYouTube：毛記電視\n\n",
+          "title": "毛記電視"
+        },
+        "publishedAt": {
+          "value": 1421041154000,
+          "dateOnly": false,
+          "timeZoneShift": 0
+        },
+        "thumbnails": {
+          "default": {
+            "height": 88,
+            "url": "https://yt3.ggpht.com/ytc/APkrFKaGoIKEurZBZ9n6bHMwz0o-1Y4kZjkWqs_HNEHu=s88-c-k-c0x00ffffff-no-rj",
+            "width": 88
+          },
+          "high": {
+            "height": 800,
+            "url": "https://yt3.ggpht.com/ytc/APkrFKaGoIKEurZBZ9n6bHMwz0o-1Y4kZjkWqs_HNEHu=s800-c-k-c0x00ffffff-no-rj",
+            "width": 800
+          },
+          "medium": {
+            "height": 240,
+            "url": "https://yt3.ggpht.com/ytc/APkrFKaGoIKEurZBZ9n6bHMwz0o-1Y4kZjkWqs_HNEHu=s240-c-k-c0x00ffffff-no-rj",
+            "width": 240
+          }
+        },
+        "title": "毛記電視"
+      },
+      "statistics": {
+        "hiddenSubscriberCount": false,
+        "subscriberCount": 448000,
+        "videoCount": 979,
+        "viewCount": 147130284
+      }
+    }
+  ],
+  "kind": "youtube#channelListResponse",
+  "pageInfo": {
+    "resultsPerPage": 5,
+    "totalResults": 1
+  }
+}

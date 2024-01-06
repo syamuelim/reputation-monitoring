@@ -1,0 +1,60 @@
+{
+  "etag": "raNHIh7-cvIsEU_ZAzC-hWInWrQ",
+  "items": [
+    {
+      "contentDetails": {
+        "relatedPlaylists": {
+          "likes": "",
+          "uploads": "UU0WP5P-ufpRfjbNrmOWwLBQ"
+        }
+      },
+      "contentOwnerDetails": {},
+      "etag": "u3Do_bHzzWzWKxts8M9ucH1VhzQ",
+      "id": "UC0WP5P-ufpRfjbNrmOWwLBQ",
+      "kind": "youtube#channel",
+      "snippet": {
+        "country": "CA",
+        "customUrl": "@theweeknd",
+        "description": "Official YouTube channel for The Weeknd.\ndawn FM - theweeknd.co/dawnfm",
+        "localized": {
+          "description": "Official YouTube channel for The Weeknd.\ndawn FM - theweeknd.co/dawnfm",
+          "title": "The Weeknd"
+        },
+        "publishedAt": {
+          "value": 1298593100000,
+          "dateOnly": false,
+          "timeZoneShift": 0
+        },
+        "thumbnails": {
+          "default": {
+            "height": 88,
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s88-c-k-c0x00ffffff-no-nd-rj",
+            "width": 88
+          },
+          "high": {
+            "height": 800,
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s800-c-k-c0x00ffffff-no-nd-rj",
+            "width": 800
+          },
+          "medium": {
+            "height": 240,
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s240-c-k-c0x00ffffff-no-nd-rj",
+            "width": 240
+          }
+        },
+        "title": "The Weeknd"
+      },
+      "statistics": {
+        "hiddenSubscriberCount": false,
+        "subscriberCount": 33600000,
+        "videoCount": 169,
+        "viewCount": 24772178136
+      }
+    }
+  ],
+  "kind": "youtube#channelListResponse",
+  "pageInfo": {
+    "resultsPerPage": 5,
+    "totalResults": 1
+  }
+}
