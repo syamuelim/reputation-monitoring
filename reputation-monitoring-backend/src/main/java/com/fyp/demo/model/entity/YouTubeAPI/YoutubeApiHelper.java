@@ -36,7 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class YoutubeApiHelper {
         private static final String CLIENT_SECRETS = "client_secret.json";
         private static final Collection<String> SCOPES = Arrays
-                        .asList("https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.force-ssl");
+                        .asList("https://www.googleapis.com/auth/youtube.readonly",
+                                        "https://www.googleapis.com/auth/youtube.force-ssl");
 
         private static final String APPLICATION_NAME = "ReputationMonitoring";
         private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -149,32 +150,33 @@ public class YoutubeApiHelper {
                 return response;
         }
 
-        public static CommentThreadListResponse searchComment(YouTubeServiceState youTubeServiceState, YoutubeAPIFilterRequest filterRequest, Boolean IsByChannel) 
-        throws GeneralSecurityException, IOException, GoogleJsonResponseException
-        {        
+        public static CommentThreadListResponse searchComment(YouTubeServiceState youTubeServiceState,
+                        YoutubeAPIFilterRequest filterRequest, Boolean IsByChannel)
+                        throws GeneralSecurityException, IOException, GoogleJsonResponseException {
                 if (youTubeServiceState.initialized == false) {
                         youTubeServiceState = getService();
-                } 
+                }
 
                 // Define and execute the API request
                 if (IsByChannel == true) {
                         // must be order by time (default)
                         YouTube.CommentThreads.List request = youTubeServiceState.youtubeService.commentThreads()
-                                .list(Arrays.asList("snippet,replies"));
-                        CommentThreadListResponse response = request.setAllThreadsRelatedToChannelId("UCXDQojAB3faJeGnSUXZBGXQ")
-                                .setMaxResults(25L)
-                                .setOrder("time")
-                                .execute();
+                                        .list(Arrays.asList("snippet,replies"));
+                        CommentThreadListResponse response = request
+                                        .setAllThreadsRelatedToChannelId(filterRequest.keyword)
+                                        .setMaxResults(filterRequest.maxResult)
+                                        .setOrder("time")
+                                        .execute();
                         return response;
                 } else {
                         YouTube.CommentThreads.List request = youTubeServiceState.youtubeService.commentThreads()
-                                .list(Arrays.asList("snippet","replies"));
+                                        .list(Arrays.asList("snippet", "replies"));
 
                         CommentThreadListResponse response = request.setMaxResults(filterRequest.maxResult)
-                                .setOrder("relevance")
-                                .setMaxResults(filterRequest.maxResult)
-                                .setVideoId(filterRequest.keyword)
-                                .execute();
+                                        .setOrder("relevance")
+                                        .setMaxResults(filterRequest.maxResult)
+                                        .setVideoId(filterRequest.keyword)
+                                        .execute();
                         return response;
                 }
         }
