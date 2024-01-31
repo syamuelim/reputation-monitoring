@@ -9,7 +9,7 @@ export const urlLinking = {
             home: "home",
             facebook: "facebook",
             footer: "footer",
-            chart: "chart"
+            // chart: "chart"
         },
     },
 };

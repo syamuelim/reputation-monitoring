@@ -58,7 +58,7 @@ export const getInstagramUserId = (fbPageId, accessToken) => {
 export const getBusinessAccount = (igUserId, accountName, accessToken) => {
     return axios.get(facebookUrl + igUserId, {
         params: {
-            fields: `business_discovery.username(${accountName}){followers_count, media_count}`,
+            fields: `business_discovery.username(${accountName}){followers_count,media_count,username,website,name,profile_picture_url,biography,media{comments_count,like_count,timestamp,caption,id}}`,
             access_token: accessToken
         }
     })

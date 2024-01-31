@@ -16,9 +16,9 @@ const StackNavigator = () => {
         headerShown: false,
         footer: { Footer },
       }}
-    >
-      <Stack.Screen name="chart" component={LineChartComponent} />
-      <Stack.Screen name="home" component={HomeScreen} /> 
+      >
+      {/* <Stack.Screen name="chart" component={LineChartComponent} /> */}
+      {/* <Stack.Screen name="home" component={HomeScreen} />  */}
       <Stack.Screen name="facebook" component={FacebookLoginScreen} />
       {/* <Navbar /> */}
     </Stack.Navigator>
