@@ -1,151 +1,160 @@
-import React, { useEffect, useRef, useState } from 'react';
-// import * as React from 'react'
-import {
-    PanResponder,
-    Dimensions,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    View,
-} from 'react-native';
-import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts';
-import {
-    Circle,
-    Defs,
-    G,
-    Line,
-    LinearGradient,
-    Path,
-    Rect,
-    Stop,
-    Svg,
-    Text as SvgText,
-} from 'react-native-svg';
-import * as shape from 'd3-shape';
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Grid, LineChart, XAxis, YAxis } from "react-native-svg-charts";
+import { Circle, Path, Text as SvgText } from "react-native-svg";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
+import * as shape from "d3-shape";
+
+import * as reputationService from "../../service/ReputationService";
+import * as testService from "../../service/Test";
 
 export default ReputationChart;
 
 function ReputationChart() {
-    const apx = (size = 0) => {
-        let width = Dimensions.get('window').width;
-        if (width > 750) {
-            return size;
-        }
-        return (width / 750) * size;
-    };
-
-    const [dateList, setDateList] = useState([
-        '15:09',
-        '15:10',
-        '15:11',
-        '15:12',
-        '15:13',
-    ]);
-
-    const Line = ({ line }) => (
-        <Path
-            d={line}
-            stroke={'rgba(134, 65, 244)'}
-            fill={'none'}
-        />
-    )
-
-    const [priceList, setPriceList] = useState([{
-        data: [
-            132,
-            147,
-            132,
-            137,
-            164,
-        ],
-        svg: { stroke: 'purple' },
-    },
-    {
-        data: [
-            122,
-            197,
-            232,
-            237,
-            264,
-        ],
-        svg: { stroke: 'green' },
-    }]);
-
-    const verticalContentInset = { top: apx(40), bottom: apx(40) };
-
-    const Decorator = ({ x, y, data }) => {
-        return data.map((value, index) => (
-            value.data.map((value, index) => <Circle
-                key={index}
-                cx={x(index)}
-                cy={y(value)}
-                r={4}
-                stroke={'rgb(134, 65, 244)'}
-                fill={'white'}
-            />)
-        ))
+  const apx = (size = 0) => {
+    let width = Dimensions.get("window").width;
+    if (width > 750) {
+      return size;
     }
+    return (width / 750) * size;
+  };
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [xAxis, setXAxis] = useState([]);
 
-    return (
-        <View
-            style={styles.container}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    width: apx(750),
-                    height: apx(570),
-                    alignSelf: 'center',
-                }}>
-                <View style={{ flex: 1 }}>
-                    <LineChart
-                        style={{ flex: 1 }}
-                        data={priceList}
-                        // curve={shape.curveMonotoneX} curve line
-                        contentInset={{ ...verticalContentInset }}
-                        animate
-                        svg={{ fill: 'url(#gradient)' }}>
-                        <Grid />
-                        <Decorator />
-                    </LineChart>
-                </View>
 
-                <YAxis
-                    style={{ width: apx(130) }}
-                    data={priceList[0].data}
-                    contentInset={verticalContentInset}
-                    svg={{ fontSize: apx(20), fill: '#617485' }}
-                />
-            </View>
-            <XAxis
-                style={{
-                    alignSelf: 'center',
-                    // marginTop: apx(57),
-                    width: apx(750),
-                    height: apx(60),
-                }}
-                numberOfTicks={7}
-                data={priceList[0].data}
-                formatLabel={(value, index) => dateList[value]}
-                contentInset={{
-                    left: apx(36),
-                    right: apx(130),
-                }}
-                svg={{
-                    fontSize: apx(20),
-                    fill: '#617485',
-                    y: apx(20),
-                }}
-            />
-        </View>
+  useEffect(() => {
+    loadReputationById(
+      ["1", "54"],
+      "2023-01-01T00:00:00",
+      "2024-01-01T00:00:00"
     );
+  }, []);
 
+  let loadReputationById = async (influencerIds, startDate, endDate) => {
+    var tempData = [];
+    influencerIds.forEach(async (influencerId) => {
+      // find reputation data
+      const reputationResponse = await reputationService.getReputationById(
+        influencerId,
+        startDate,
+        endDate
+      );
+
+      // create data matrix
+      // if there is no record
+      if (tempData.length == 0) {
+        tempData.push(formDataObject(reputationResponse.data));
+        setXAxis(
+          reputationResponse.data.map(
+            ({ reputationAt }) => new Date(reputationAt).toLocaleDateString("en-US")
+          )
+        );
+      } else {
+        // if records exist
+        tempData.push(formDataObject(reputationResponse.data));
+      }
+
+      if (tempData.length === influencerIds.length) {
+        // set the data to the table
+        setData(tempData);
+        setLoading(false);
+      }
+    });
+  };
+
+  const Decorator = ({ x, y, data }) => {
+    return data.map((value, index) =>
+      value.data.map((value, index) => (
+        <Circle
+          key={index}
+          cx={x(index)}
+          cy={y(value)}
+          r={4}
+          stroke={"rgb(134, 65, 244)"}
+          fill={"white"}
+        />
+      ))
+    );
+  };
+
+  function formDataObject(data) {
+    var dataObject = {
+      data: data.map(({ rating }) => rating),
+      svg: { stroke: "#" + Math.floor(Math.random() * 16777215).toString(16) }, // random color
+    };
+    return dataObject;
+  }
+
+  return (
+    <View style={styles.container}>
+      {loading ? (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      ) : (
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              width: apx(750),
+              height: apx(570),
+              alignSelf: "center",
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <LineChart
+                style={{ flex: 1 }}
+                data={data}
+                curve={shape.curveMonotoneX} //curve line
+                contentInset={{ top: apx(40), bottom: apx(40) }}
+                animate
+                svg={{ fill: "url(#gradient)" }}
+              >
+                <Grid />
+                <Decorator />
+              </LineChart>
+            </View>
+
+            <YAxis
+              style={{ width: apx(130) }}
+              data={data[0].data}
+              contentInset={{ top: apx(40), bottom: apx(40) }}
+              svg={{ fontSize: apx(20), fill: "#617485" }}
+            />
+          </View>
+          <XAxis
+            style={{
+              alignSelf: "center",
+              // marginTop: apx(57),
+              width: apx(750),
+              height: apx(60),
+            }}
+            numberOfTicks={7}
+            data={data[0].data}
+            formatLabel={(value, index) => xAxis[value]}
+            contentInset={{
+              left: apx(36),
+              right: apx(130),
+            }}
+            svg={{
+              fontSize: apx(20),
+              fill: "#617485",
+              y: apx(20),
+            }}
+          />
+        </View>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        display: "flex",
-        backgroundColor: "white",
-    },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    display: "flex",
+    backgroundColor: "white",
+  },
 });
