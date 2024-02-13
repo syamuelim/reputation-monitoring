@@ -5,9 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/page/Home";
 import FacebookLoginScreen from "./src/page/FacebookLogin";
 import Footer from "./src/component/Footer";
-import LineChartComponent from "./src/component/LineChart";
 import LineChartExample from "./src/component/MultipleChart";
-import InteractiveChart from "./src/component/ChartDemo";
 
 const Stack = createNativeStackNavigator();
 
