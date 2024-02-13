@@ -23,9 +23,9 @@ import {
 } from 'react-native-svg';
 import * as shape from 'd3-shape';
 
-export default InteractiveChart;
+export default ReputationChart;
 
-function InteractiveChart() {
+function ReputationChart() {
     const apx = (size = 0) => {
         let width = Dimensions.get('window').width;
         if (width > 750) {
@@ -144,7 +144,6 @@ function InteractiveChart() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: "8px",
         justifyContent: "center",
         display: "flex",
         backgroundColor: "white",

@@ -2,8 +2,8 @@ import React, { useState, useEffect, setState } from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { WebView } from "react-native-webview";
 import { Chart } from "react-google-charts";
-import * as reputationService from "../service/ReputationService";
-import * as testService from "../service/Test";
+import * as reputationService from "../../service/ReputationService";
+import * as testService from "../../service/Test";
 
 const LineChartComponent = ({ navigation }) => {
   const [reputation, setReputation] = useState([]);

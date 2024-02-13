@@ -8,6 +8,7 @@ export const urlLinking = {
     config: {
         screens: {
             home: "home",
+            dashboard: "dashboard",
             facebook: "facebook",
             footer: "footer",
             // chart: "chart"
