@@ -5,9 +5,9 @@ import { Circle, Path, Text as SvgText } from "react-native-svg";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import * as shape from "d3-shape";
+import { useInfluencerContext } from "../../service/StateContext";
 
 import * as reputationService from "../../service/ReputationService";
-import * as testService from "../../service/Test";
 
 export default ReputationChart;
 
@@ -22,7 +22,7 @@ function ReputationChart() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [xAxis, setXAxis] = useState([]);
-
+  const { state, dispatch } = useInfluencerContext();
 
   useEffect(() => {
     loadReputationById(
@@ -32,34 +32,51 @@ function ReputationChart() {
     );
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    loadReputationById(
+      ["1", "54"],
+      "2023-01-01T00:00:00",
+      "2024-01-01T00:00:00"
+    );
+  }, [state.influencers]);
+
   let loadReputationById = async (influencerIds, startDate, endDate) => {
     var tempData = [];
-    influencerIds.forEach(async (influencerId) => {
-      // find reputation data
-      const reputationResponse = await reputationService.getReputationById(
-        influencerId,
-        startDate,
-        endDate
-      );
-
-      // create data matrix
-      // if there is no record
-      if (tempData.length == 0) {
-        tempData.push(formDataObject(reputationResponse.data));
-        setXAxis(
-          reputationResponse.data.map(
-            ({ reputationAt }) => new Date(reputationAt).toLocaleDateString("en-US")
-          )
+    state.influencers.forEach(async (influencer) => {
+      if (influencer.selected == true) {
+        console.log(influencer);
+        // find reputation data
+        const reputationResponse = await reputationService.getReputationById(
+          influencer.id,
+          startDate,
+          endDate
         );
-      } else {
-        // if records exist
-        tempData.push(formDataObject(reputationResponse.data));
-      }
 
-      if (tempData.length === influencerIds.length) {
-        // set the data to the table
-        setData(tempData);
-        setLoading(false);
+        // create data matrix
+        // if there is no record
+        if (tempData.length == 0) {
+          tempData.push(formDataObject(reputationResponse.data));
+          setXAxis(
+            reputationResponse.data.map(({ reputationAt }) =>
+              new Date(reputationAt).toLocaleDateString("en-US")
+            )
+          );
+        } else {
+          // if records exist
+          tempData.push(formDataObject(reputationResponse.data));
+        }
+
+        if (
+          tempData.length ===
+          state.influencers.filter(function (obj) {
+            return obj.selected === true;
+          }).length
+        ) {
+          // set the data to the table
+          setData(tempData);
+          setLoading(false);
+        }
       }
     });
   };
@@ -82,8 +99,9 @@ function ReputationChart() {
   function formDataObject(data) {
     var dataObject = {
       data: data.map(({ rating }) => rating),
-      svg: { stroke: "#" + Math.floor(Math.random() * 16777215).toString(16) }, // random color
+      svg: { stroke: "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);})}, // random color
     };
+    console.log(dataObject)
     return dataObject;
   }
 
@@ -99,7 +117,7 @@ function ReputationChart() {
             style={{
               flexDirection: "row",
               width: apx(750),
-              height: apx(570),
+              height: apx(270),
               alignSelf: "center",
             }}
           >
@@ -156,5 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     backgroundColor: "white",
+    border: "1px solid #c6c6c6",
+    borderRadius: "8px",
   },
 });

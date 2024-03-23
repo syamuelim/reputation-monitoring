@@ -3,7 +3,6 @@ import React, { useState, useEffect, setState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { ListItem } from "@react-native-material/core";
-import * as testService from "../service/Test";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
 import * as facebookService from "../service/FacebookService";
@@ -36,6 +35,7 @@ const FacebookLoginScreen = ({ navigation }) => {
   useEffect(() => {
     if (response && response.type === "success" && response.authentication) {
       (async () => {
+        console.log(response)
         const userInfoResponse = await fetch(
           `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
         );
@@ -156,7 +156,7 @@ function Profile({ user, loadBusinessAccount }) {
 function download(jsonData, fileName) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(jsonData)], { type: `application/json` }));
-  a.download = fileName + '.js';
+  a.download = fileName + '.json';
   a.click();
 }
 

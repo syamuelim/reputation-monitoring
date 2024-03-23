@@ -9,18 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fyp.demo.model.entity.Reputation;
-import com.fyp.demo.model.entity.system.Watching;
 import com.fyp.demo.repository.ReputationRepository;
-import com.fyp.demo.repository.WatchingRepository;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 
 @Tag(name = "reputation", description = "reputation")
 @RestController

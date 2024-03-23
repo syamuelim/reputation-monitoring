@@ -3,7 +3,7 @@ import React, { useState, useEffect, setState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ListItem } from "@react-native-material/core";
-import * as testService from "../service/Test";
+import * as testService from "../service/Influcener";
 
 const HomeScreen = ({ navigation }) => {
   const [students, setStudent] = useState([]);
