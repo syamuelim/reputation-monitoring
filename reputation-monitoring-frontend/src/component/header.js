@@ -23,6 +23,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
 import * as facebookService from "../service/FacebookService";
+import * as instagramService from "../service/InstagramService";
 
 import { facebookPermission } from "../Config/Menu";
 
@@ -30,20 +31,24 @@ import { useInfluencerContext } from "../service/StateContext";
 import * as influcenerService from "../service/Influcener";
 
 const Header = () => {
+  WebBrowser.maybeCompleteAuthSession();
+  const [user, setUser] = useState(null);
+  const [pageId, setPageId] = useState(null);
+  const [igUserId, setIgUserId] = useState(null);
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientId: "652157000425074",
+    scopes: facebookPermission,
+    configId: "3654644834792585",
+  });
+  const [form, setForm] = React.useState({});
+  const [open, setOpen] = React.useState(false);
+  const { state, dispatch } = useInfluencerContext();
+
   useEffect(() => {
     getInfluencers();
   }, []);
   useEffect(() => {
-    if (response && response.type === "success" && response.authentication) {
-      (async () => {
-        console.log(response);
-        const userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
-        );
-        const userInfo = await userInfoResponse.json();
-        setUser(userInfo);
-      })();
-    }
+    loadUser();
   }, [response]);
 
   useEffect(() => {
@@ -63,19 +68,6 @@ const Header = () => {
     handleLogin();
   }, [form]);
 
-  WebBrowser.maybeCompleteAuthSession();
-  const [user, setUser] = useState(null);
-  const [pageId, setPageId] = useState(null);
-  const [igUserId, setIgUserId] = useState(null);
-  const [request, response, promptAsync] = Facebook.useAuthRequest({
-    clientId: "652157000425074",
-    scopes: facebookPermission,
-    configId: "3654644834792585",
-  });
-  const [form, setForm] = React.useState({});
-  const [open, setOpen] = React.useState(false);
-  const { state, dispatch } = useInfluencerContext();
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -93,22 +85,45 @@ const Header = () => {
     });
   };
 
+  const loadUser = async () => {
+    if (response && response.type === "success" && response.authentication) {
+      (async () => {
+        console.log("loadUser");
+        const userInfoResponse = await fetch(
+          `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
+        );
+        const userInfo = await userInfoResponse.json();
+        setUser(userInfo);
+      })();
+    }
+  };
   let loadData = async () => {
     if (response) {
-      const res = await facebookService.getPageId(
-        response.authentication.accessToken
-      );
-      setPageId(res.data.data[0].id);
+      console.log("loadData");
+      if (pageId) {
+        loadIgUserId();
+      } else {
+        const res = await facebookService.getPageId(
+          response.authentication.accessToken
+        );
+        setPageId(res.data.data[0].id);
+      }
     }
   };
 
   let loadIgUserId = async () => {
+    console.log(response, pageId);
     if (response && pageId) {
-      const res = await facebookService.getInstagramUserId(
-        pageId,
-        response.authentication.accessToken
-      );
-      setIgUserId(res.data.instagram_business_account.id);
+      console.log("enter");
+      if (igUserId) {
+        loadBusinessAccount();
+      } else {
+        const res = await facebookService.getInstagramUserId(
+          pageId,
+          response.authentication.accessToken
+        );
+        setIgUserId(res.data.instagram_business_account.id);
+      }
     }
   };
 
@@ -122,18 +137,35 @@ const Header = () => {
 
       // download
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(
-        new Blob([JSON.stringify(res.data)], { type: `application/json` })
-      );
+      const blob = new Blob([JSON.stringify(res.data)], {
+        type: `application/json`,
+      });
+      a.href = URL.createObjectURL(blob);
       a.download = form.instagramUserName + ".json";
+      const str = await blob.text();
       a.click();
+
+      console.log("b4 down", JSON.stringify(JSON.parse(res.data)));
+      // save response
+      // TODO hardcoded instagram user id
+      const createResponse =
+        await instagramService.createInstagramPostsResponse(
+          1,
+          blob.text()
+        );
+      console.log("b4 down");
+      console.log(createResponse.data);
     }
   };
 
   const handleLogin = async () => {
-    const result = await promptAsync();
-    if (result.type !== "success") {
-      return;
+    if (response) {
+      loadUser();
+    } else {
+      const result = await promptAsync();
+      if (result.type !== "success") {
+        return;
+      }
     }
   };
 

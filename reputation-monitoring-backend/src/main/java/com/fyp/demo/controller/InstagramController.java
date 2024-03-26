@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fyp.demo.model.entity.InstagramPost;
+import com.fyp.demo.model.entity.InstagramResponse;
 import com.fyp.demo.model.entity.InstagramUser;
 import com.fyp.demo.repository.InstagramPostRepository;
+import com.fyp.demo.repository.InstagramResponseRepository;
 import com.fyp.demo.repository.InstagramUserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +38,8 @@ public class InstagramController {
     InstagramUserRepository InstagramUserRepository;
     @Autowired
     InstagramPostRepository InstagramPostRepository;
+    @Autowired
+    InstagramResponseRepository InstagramResponseRepository;
 
     @Operation(summary = "Get Instagram User")
     @GetMapping("")
@@ -69,7 +73,8 @@ public class InstagramController {
             Pageable pageable = PageRequest.of(page, itemPerPage);
 
             List<InstagramPost> instagramPosts = new ArrayList<InstagramPost>();
-            InstagramPostRepository.findByInstagramIdOrderByCreatedAtDesc(instagramId, pageable).forEach(instagramPosts::add);
+            InstagramPostRepository.findByInstagramIdOrderByCreatedAtDesc(instagramId, pageable)
+                    .forEach(instagramPosts::add);
             return new ResponseEntity<>(instagramPosts, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -144,6 +149,29 @@ public class InstagramController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("{id}/response")
+    public ResponseEntity<HttpStatus> createResponse(@PathVariable("id") Integer id, @RequestBody String response) {
+        try {
+            InstagramResponse _instagramResponse = InstagramResponseRepository
+                    .save(new InstagramResponse(id, response));
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("{id}/posts")
+    public ResponseEntity<HttpStatus> createPost(@PathVariable("id") Integer id, @RequestBody ArrayList<InstagramPost> posts) {
+        try {
+            for (InstagramPost post : posts) {
+                InstagramPostRepository.save(post);
+            }
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
