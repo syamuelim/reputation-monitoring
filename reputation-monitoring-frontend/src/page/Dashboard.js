@@ -12,7 +12,7 @@ import styled from "@mui/system/styled";
 
 const DashboardScreen = ({ navigation }) => {
   // set default chart
-  const [selectedChartIndex, setSelectedChartIndex] = useState(1);
+  const [selectedChartIndex, setSelectedChartIndex] = useState(0);
   const handleChartPanalMessage = (index) => {
     setSelectedChartIndex(index);
   };

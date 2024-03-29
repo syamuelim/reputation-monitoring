@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { View, Text } from "react-native";
 import Button from "@mui/material/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Box from "@mui/material/Box";
@@ -12,6 +13,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -19,6 +24,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
@@ -43,8 +49,8 @@ const Header = () => {
   });
   const [form, setForm] = React.useState({});
   const [open, setOpen] = React.useState(false);
-  const [openStatus, setopenStatus] = React.useState(false);
-  const [loadingStatusText, setLoadingStatusText] = React.useState("");
+  const [openStatus, setOpenStatus] = React.useState(false);
+  const [loadingStatusText, setLoadingStatusText] = React.useState("Loading Instagram Data!");
 
   const [youtubeList, setYoutubeList] = React.useState([]);
   // temp data only
@@ -77,7 +83,9 @@ const Header = () => {
   }, [igUserId]);
 
   useEffect(() => {
-    setYoutubeSelectDialog(true);
+    if (youtubeList.length > 0) {
+      setYoutubeSelectDialog(true);
+    }
   }, [youtubeList]);
 
   // login to facebook if havnt
@@ -88,12 +96,10 @@ const Header = () => {
   // finish all youtube fetching
   useEffect(() => {
     if (confirmedYoutubeChannel) {
-      console.log({
-        channelId: confirmedYoutubeChannel.id,
-        channelName: confirmedYoutubeChannel.snippet.title,
-        followers: confirmedYoutubeChannel.statistics.subscriberCount,
-        video_published: confirmedYoutubeChannel.statistics.videoCount,
-      });
+      handleLogin()
+      setYoutubeSelectDialog(false)
+      handleLoadingStatusText("Loading Instagram Data!")
+      handleClickOpenStatus()
     }
   }, [confirmedYoutubeChannel]);
 
@@ -106,7 +112,7 @@ const Header = () => {
   };
 
   const handleClickOpenStatus = () => {
-    setopenStatus(true);
+    setOpenStatus(true);
   };
 
   const handleCloseStatus = () => {
@@ -129,7 +135,6 @@ const Header = () => {
   const loadUser = async () => {
     if (response && response.type === "success" && response.authentication) {
       (async () => {
-        console.log("loadUser");
         const userInfoResponse = await fetch(
           `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
         );
@@ -140,7 +145,6 @@ const Header = () => {
   };
   let loadData = async () => {
     if (response) {
-      console.log("loadData");
       if (pageId) {
         loadIgUserId();
       } else {
@@ -153,9 +157,7 @@ const Header = () => {
   };
 
   let loadIgUserId = async () => {
-    console.log(response, pageId);
     if (response && pageId) {
-      console.log("enter");
       if (igUserId) {
         loadBusinessAccount();
       } else {
@@ -232,10 +234,14 @@ const Header = () => {
         instagramCreateResponse.data.id,
         postList
       );
+
+    handleClose()
+    handleCloseStatus()
   };
 
   let loadBusinessAccount = async () => {
     if (igUserId && response && form.instagramUserName) {
+      setLoadingStatusText("Loading Instagram Data!")
       const res = await facebookService.getBusinessAccount(
         igUserId,
         form.instagramUserName,
@@ -243,7 +249,6 @@ const Header = () => {
       );
 
       // save response
-      console.log("b4 down");
       createEntity(res.data, null);
     }
   };
@@ -272,23 +277,22 @@ const Header = () => {
       const response = await youtubeService.getExternalYoutbeChannels({
         keyword: form.youtubeChannelName,
       });
-      console.log(response.data.items);
       setYoutubeList(response.data.items);
     }
   };
 
-  const youtubeSelectDialogOnclick = (item) => {
+  const youtubeSelectDialogOnclick = (item) => () => {
     setSelectedYoutubeChannel(item);
   };
 
   // finished youtube, then load the instagram
   const youtubeSelectDialogConfirm = async () => {
-    let item = youtubeList[0].snippet;
-    const res = await youtubeService.getExternalYoutbeChannelDetails({
-      keyword: item.channelId,
-    });
-    console.log(res.data);
-    setConfirmedYoutubeChannel(res.data.items[0]);
+    if (selectedYoutubeChannel != {}) {
+      const res = await youtubeService.getExternalYoutbeChannelDetails({
+        keyword: selectedYoutubeChannel.snippet.channelId,
+      });
+      setConfirmedYoutubeChannel(res.data.items[0]);
+    }
   };
 
   return (
@@ -297,7 +301,7 @@ const Header = () => {
         <Box
           sx={{
             width: "100%",
-            bgcolor: "white",
+            backgroundColor: "white",
             minHeight: "40px",
             display: "flex",
             alignSelf: "center",
@@ -436,11 +440,43 @@ const Header = () => {
           </DialogActions>
         </Dialog>
         <Dialog open={openStatus} onClose={handleCloseStatus}>
-          <DialogTitle>{loadingStatusText}</DialogTitle>
-          <DialogContent></DialogContent>
+          <DialogTitle sx={{backgroundColor: theme.palette.coreGreen.main, color: theme.palette.coreGreen.contrastText}}>{loadingStatusText}</DialogTitle>
+          <DialogContent sx={{display: 'flex', justifyContent: "center", backgroundColor: theme.palette.coreGreen.main}}>
+            <CircularProgress color="coreWhite"/>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={youtubeSelectDialog}>
+          <DialogTitle>Please select influcener's channel</DialogTitle>
+          <DialogContent>
+            {youtubeList.map((channel, index) => (
+              <View key={index}>
+                <ListItemButton onClick={youtubeSelectDialogOnclick(channel)}
+                  sx={selectedYoutubeChannel.etag == channel.etag ?
+                    { borderRadius: "8px", bgcolor: "#5AC8C5", color: "white" } : {}}
+                >
+                  <ListItemAvatar>
+                    <Avatar src={channel.snippet.thumbnails.default.url}>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={'Name: ' + channel.snippet.channelTitle} secondary={'Description: ' + channel.snippet.description} />
+                </ListItemButton>
+              </View>
+            ))}
+            <DialogActions>
+              <Button
+                color="coreOrange"
+                variant="contained"
+                size="small"
+                sx={{ borderRadius: "16px" }}
+                onClick={youtubeSelectDialogConfirm}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </DialogContent>
         </Dialog>
       </ThemeProvider>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
@@ -456,6 +492,12 @@ const theme = createTheme({
       main: "#c8c55a",
       light: "#c8c55a",
       dark: "#c8c55a",
+      contrastText: "#fff",
+    },
+    coreWhite: {
+      main: "#fff",
+      light: "#fff",
+      dark: "#fff",
       contrastText: "#fff",
     },
   },
