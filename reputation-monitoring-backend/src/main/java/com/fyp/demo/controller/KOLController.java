@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fyp.demo.model.entity.KOL;
+import com.fyp.demo.model.request.KOLCreateRequest;
 import com.fyp.demo.repository.KOLRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -81,7 +82,8 @@ public class KOLController {
 
 		if (KOLs.isPresent()) {
 			KOL _KOL = KOLs.get();
-			_KOL.setName(KOL.getName());
+			_KOL.setInstagramId(KOL.getInstagramId());
+			_KOL.setYoutubeChannel(KOL.getYoutubeChannel());
 			return new ResponseEntity<>(KOLRepository.save(_KOL), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

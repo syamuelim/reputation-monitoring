@@ -29,6 +29,7 @@ import { facebookPermission } from "../Config/Menu";
 
 import { useInfluencerContext } from "../service/StateContext";
 import * as influcenerService from "../service/Influcener";
+import * as youtubeService from "../service/YoutubeService";
 
 const Header = () => {
   WebBrowser.maybeCompleteAuthSession();
@@ -42,6 +43,18 @@ const Header = () => {
   });
   const [form, setForm] = React.useState({});
   const [open, setOpen] = React.useState(false);
+  const [openStatus, setopenStatus] = React.useState(false);
+  const [loadingStatusText, setLoadingStatusText] = React.useState("");
+
+  const [youtubeList, setYoutubeList] = React.useState([]);
+  // temp data only
+  const [selectedYoutubeChannel, setSelectedYoutubeChannel] = React.useState(
+    {}
+  );
+  // detailed data from API call
+  const [confirmedYoutubeChannel, setConfirmedYoutubeChannel] =
+    React.useState(null);
+  const [youtubeSelectDialog, setYoutubeSelectDialog] = React.useState(false);
   const { state, dispatch } = useInfluencerContext();
 
   useEffect(() => {
@@ -63,10 +76,26 @@ const Header = () => {
     loadBusinessAccount();
   }, [igUserId]);
 
+  useEffect(() => {
+    setYoutubeSelectDialog(true);
+  }, [youtubeList]);
+
   // login to facebook if havnt
   useEffect(() => {
-    handleLogin();
+    searchYoutubeChannel();
   }, [form]);
+
+  // finish all youtube fetching
+  useEffect(() => {
+    if (confirmedYoutubeChannel) {
+      console.log({
+        channelId: confirmedYoutubeChannel.id,
+        channelName: confirmedYoutubeChannel.snippet.title,
+        followers: confirmedYoutubeChannel.statistics.subscriberCount,
+        video_published: confirmedYoutubeChannel.statistics.videoCount,
+      });
+    }
+  }, [confirmedYoutubeChannel]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,6 +103,18 @@ const Header = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickOpenStatus = () => {
+    setopenStatus(true);
+  };
+
+  const handleCloseStatus = () => {
+    setOpenStatus(false);
+  };
+
+  const handleLoadingStatusText = (text) => {
+    setLoadingStatusText(text);
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -127,6 +168,72 @@ const Header = () => {
     }
   };
 
+  const createEntity = async (instagramData) => {
+    // create kol
+    const kolCreateResponse = await influcenerService.postInfluencers({
+      name: form.instagramUserName,
+      otherName: form.instagramUserName,
+    });
+
+    // create instagram
+    const instagramCreateResponse =
+      await instagramService.createInstagramEntity({
+        kolId: kolCreateResponse.data.id,
+        instagramUserId: instagramData.business_discovery.id,
+        name: form.instagramUserName,
+        posts: instagramData.business_discovery.media_count,
+        followers: instagramData.business_discovery.followers_count,
+      });
+
+    // create youtube
+    const youtubeCreateResponse = await youtubeService.postYoutubeChannel({
+      kolId: kolCreateResponse.data.id,
+      channelId: confirmedYoutubeChannel.id,
+      channelName: confirmedYoutubeChannel.snippet.title,
+      followers: confirmedYoutubeChannel.statistics.subscriberCount,
+      video_published: confirmedYoutubeChannel.statistics.videoCount,
+    });
+
+    // update kol's youtube id and instagram id
+    const kolUpdateResponse = await influcenerService.updateInfluencer(
+      kolCreateResponse.data.id,
+      {
+        ...kolCreateResponse.data,
+        youtubeChannel: youtubeCreateResponse.data,
+        instagramId: instagramCreateResponse.data.id,
+      }
+    );
+
+    // save kol instagram data for the AI
+    const createResponse = await instagramService.createInstagramPostsResponse(
+      instagramCreateResponse.data.id,
+      {
+        json: JSON.stringify(instagramData),
+      }
+    );
+
+    let postList = [];
+    // save kol posts data to the backend
+    instagramData.business_discovery.media.data.forEach((post) => {
+      const tempPost = {
+        postId: post.id,
+        mediaUrl: post.media_url,
+        commentsCount: post.comments_count,
+        instagramId: instagramCreateResponse.data.id,
+        content: post.caption,
+        likes: post.like_count,
+        createdAt: post.timestamp.split("+")[0],
+      };
+      postList.push(tempPost);
+    });
+
+    const createInstagramPostsResponse =
+      await instagramService.createInstagramPost(
+        instagramCreateResponse.data.id,
+        postList
+      );
+  };
+
   let loadBusinessAccount = async () => {
     if (igUserId && response && form.instagramUserName) {
       const res = await facebookService.getBusinessAccount(
@@ -135,26 +242,9 @@ const Header = () => {
         response.authentication.accessToken
       );
 
-      // download
-      const a = document.createElement("a");
-      const blob = new Blob([JSON.stringify(res.data)], {
-        type: `application/json`,
-      });
-      a.href = URL.createObjectURL(blob);
-      a.download = form.instagramUserName + ".json";
-      const str = await blob.text();
-      a.click();
-
-      console.log("b4 down", JSON.stringify(JSON.parse(res.data)));
       // save response
-      // TODO hardcoded instagram user id
-      const createResponse =
-        await instagramService.createInstagramPostsResponse(
-          1,
-          blob.text()
-        );
       console.log("b4 down");
-      console.log(createResponse.data);
+      createEntity(res.data, null);
     }
   };
 
@@ -175,6 +265,30 @@ const Header = () => {
       type: "SET_INFLUENCER",
       payload: response.data,
     });
+  };
+
+  const searchYoutubeChannel = async () => {
+    if (form.youtubeChannelName) {
+      const response = await youtubeService.getExternalYoutbeChannels({
+        keyword: form.youtubeChannelName,
+      });
+      console.log(response.data.items);
+      setYoutubeList(response.data.items);
+    }
+  };
+
+  const youtubeSelectDialogOnclick = (item) => {
+    setSelectedYoutubeChannel(item);
+  };
+
+  // finished youtube, then load the instagram
+  const youtubeSelectDialogConfirm = async () => {
+    let item = youtubeList[0].snippet;
+    const res = await youtubeService.getExternalYoutbeChannelDetails({
+      keyword: item.channelId,
+    });
+    console.log(res.data);
+    setConfirmedYoutubeChannel(res.data.items[0]);
   };
 
   return (
@@ -320,6 +434,10 @@ const Header = () => {
               Confirm
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog open={openStatus} onClose={handleCloseStatus}>
+          <DialogTitle>{loadingStatusText}</DialogTitle>
+          <DialogContent></DialogContent>
         </Dialog>
       </ThemeProvider>
     </SafeAreaView>

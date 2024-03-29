@@ -11,7 +11,8 @@ import Grid from "@mui/system/Unstable_Grid";
 import styled from "@mui/system/styled";
 
 const DashboardScreen = ({ navigation }) => {
-  const [selectedChartIndex, setSelectedChartIndex] = useState(0);
+  // set default chart
+  const [selectedChartIndex, setSelectedChartIndex] = useState(1);
   const handleChartPanalMessage = (index) => {
     setSelectedChartIndex(index);
   };
@@ -29,7 +30,7 @@ const DashboardScreen = ({ navigation }) => {
             <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
           </Grid>
           <Grid xs={9}>
-            <InstagramPostListView instagramUserId={1}></InstagramPostListView>
+            <InstagramPostListView instagramUserId={102}></InstagramPostListView>
           </Grid>
         </Grid>
       </Container>

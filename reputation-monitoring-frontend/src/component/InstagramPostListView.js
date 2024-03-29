@@ -18,9 +18,9 @@ const InstagramPostListView = ({ instagramUserId }) => {
 
   useEffect(() => {
     loadInstagramPostById(instagramUserId, page, itemPerPage);
-  }, []); 
+  }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     loadInstagramPostById(instagramUserId, page, itemPerPage);
   }, [page]);
 
@@ -38,7 +38,7 @@ const InstagramPostListView = ({ instagramUserId }) => {
   };
 
   let pageSelected = (event, page) => {
-    setPage(page - 1)
+    setPage(page - 1);
   };
 
   return (
@@ -58,7 +58,7 @@ const InstagramPostListView = ({ instagramUserId }) => {
           <Grid
             container
             columnSpacing={1}
-            sx={{ "justifyContent": "spaceBetween", margin: "0 4px 0 4px" }}
+            sx={{ justifyContent: "spaceBetween", margin: "0 4px 0 4px" }}
           >
             {(posts.length === 0 ? Array.from(new Array(3)) : posts).map(
               (post, index) => (
@@ -72,18 +72,38 @@ const InstagramPostListView = ({ instagramUserId }) => {
                 >
                   {post ? (
                     post.mediaUrl ? (
-                      <img
-                        style={{
-                          display: "block",
-                          objectFit: "cover",
-                          width: "100%",
-                          height: "74%",
-                          aspectRatio: "1/1",
-                          borderRadius: "8px",
-                          border: "1px solid #c6c6c6",
-                        }}
-                        src={post.mediaUrl}
-                      />
+                      post.mediaUrl.includes("mp4") ? (
+                        <video
+                          autoplay
+                          controls
+                          style={{
+                            display: "block",
+                            objectFit: "cover",
+                            width: "212px",
+                            height: "207.5px",
+                            aspectRatio: "1/1",
+                            borderRadius: "8px",
+                            border: "1px solid #c6c6c6",
+                          }}
+                        >
+                          <source src={post.mediaUrl} type="video/mp4"></source>
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <img
+                          style={{
+                            display: "block",
+                            objectFit: "cover",
+                            width: "100%",
+                            height: "74%",
+                            aspectRatio: "1/1",
+                            borderRadius: "8px",
+                            border: "1px solid #c6c6c6",
+                          }}
+                          src={post.mediaUrl}
+                          alt="Cannot display video"
+                        />
+                      )
                     ) : (
                       <img
                         style={{

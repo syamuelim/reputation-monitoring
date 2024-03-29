@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fyp.demo.model.entity.InstagramPost;
 import com.fyp.demo.model.entity.InstagramResponse;
 import com.fyp.demo.model.entity.InstagramUser;
+import com.fyp.demo.model.request.InstagramResponseCreateRequest;
 import com.fyp.demo.repository.InstagramPostRepository;
 import com.fyp.demo.repository.InstagramResponseRepository;
 import com.fyp.demo.repository.InstagramUserRepository;
@@ -153,10 +154,10 @@ public class InstagramController {
     }
 
     @PostMapping("{id}/response")
-    public ResponseEntity<HttpStatus> createResponse(@PathVariable("id") Integer id, @RequestBody String response) {
+    public ResponseEntity<HttpStatus> createResponse(@PathVariable("id") Integer id, @RequestBody InstagramResponseCreateRequest response) {
         try {
             InstagramResponse _instagramResponse = InstagramResponseRepository
-                    .save(new InstagramResponse(id, response));
+                    .save(new InstagramResponse(id, response.getJson()));
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
