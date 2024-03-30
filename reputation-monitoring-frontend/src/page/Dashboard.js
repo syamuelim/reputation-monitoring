@@ -6,6 +6,7 @@ import ChartHub from "../component/Chart/ChartHub";
 import ChartPanal from "../component/Chart/ChartPanal";
 import InstagramPostListView from "../component/InstagramPostListView";
 import Header from "../component/header";
+import InflucenerTable from "../component/DataTable";
 import Container from "@mui/material/Box";
 import Grid from "@mui/system/Unstable_Grid";
 import styled from "@mui/system/styled";
@@ -22,12 +23,15 @@ const DashboardScreen = ({ navigation }) => {
         <Grid container rowGap={2} columnSpacing={{ md: 1 }}>
           <Grid xs={12} sm={12} md={12}>
             <Header></Header>
-          </Grid>        
-            <Grid xs={12} sm={12} md={10}>
-            <ChartHub selectedChartIndex={selectedChartIndex}></ChartHub>
           </Grid>
           <Grid xs={12} sm={12} md={2}>
             <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
+          </Grid>
+          <Grid xs={12} sm={12} md={4}>
+            { <ChartHub selectedChartIndex={selectedChartIndex}></ChartHub> }
+          </Grid>
+          <Grid xs={12} sm={12} md={6}>
+            <InflucenerTable ></InflucenerTable>
           </Grid>
           <Grid xs={9}>
             <InstagramPostListView instagramUserId={102}></InstagramPostListView>

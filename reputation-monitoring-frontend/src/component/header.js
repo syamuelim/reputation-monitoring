@@ -194,6 +194,7 @@ const Header = () => {
       channelName: confirmedYoutubeChannel.snippet.title,
       followers: confirmedYoutubeChannel.statistics.subscriberCount,
       video_published: confirmedYoutubeChannel.statistics.videoCount,
+      iconUrl: confirmedYoutubeChannel.snippet.thumbnails.default.url
     });
 
     // update kol's youtube id and instagram id
@@ -237,6 +238,7 @@ const Header = () => {
 
     handleClose()
     handleCloseStatus()
+    getInfluencers()
   };
 
   let loadBusinessAccount = async () => {
@@ -336,6 +338,7 @@ const Header = () => {
               return (
                 <Box key={data.id} sx={{ marginRight: "4px" }}>
                   <Chip
+                    avatar={<Avatar src={data.youtubeChannel.iconUrl}></Avatar>}
                     label={data.name}
                     onClick={handleDelete(data)}
                     variant={data.selected == true ? "filled" : "outlined"}
@@ -440,9 +443,9 @@ const Header = () => {
           </DialogActions>
         </Dialog>
         <Dialog open={openStatus} onClose={handleCloseStatus}>
-          <DialogTitle sx={{backgroundColor: theme.palette.coreGreen.main, color: theme.palette.coreGreen.contrastText}}>{loadingStatusText}</DialogTitle>
-          <DialogContent sx={{display: 'flex', justifyContent: "center", backgroundColor: theme.palette.coreGreen.main}}>
-            <CircularProgress color="coreWhite"/>
+          <DialogTitle sx={{ backgroundColor: theme.palette.coreGreen.main, color: theme.palette.coreGreen.contrastText }}>{loadingStatusText}</DialogTitle>
+          <DialogContent sx={{ display: 'flex', justifyContent: "center", backgroundColor: theme.palette.coreGreen.main }}>
+            <CircularProgress color="coreWhite" />
           </DialogContent>
         </Dialog>
         <Dialog open={youtubeSelectDialog}>

@@ -36,6 +36,9 @@ public class YoutubeChannel {
     @Column(name = "video_published")
 	private Integer video_published;
 
+	@Column(name = "icon_url")
+	private String iconUrl;
+
 	@OneToMany(mappedBy = "youtubeChannel", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	@OrderBy("dislike DESC, likes ASC")

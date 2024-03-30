@@ -17,22 +17,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fyp.demo.model.entity.InstagramPost;
+import com.fyp.demo.model.entity.InstagramUser;
 import com.fyp.demo.model.entity.KOL;
 import com.fyp.demo.model.request.KOLCreateRequest;
+import com.fyp.demo.model.response.KOLSearchResponse;
+import com.fyp.demo.repository.InstagramPostRepository;
+import com.fyp.demo.repository.InstagramUserRepository;
 import com.fyp.demo.repository.KOLRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "KOL", description = "KOL")
-@RestController	
+@RestController
 @RequestMapping("/api/kol/")
 public class KOLController {
 
 	@Autowired
 	KOLRepository KOLRepository;
-	@Operation(
-      summary = "Get All KOLs")
+
+	@Autowired
+	InstagramUserRepository _instagramUserRepository;
+
+	@Operation(summary = "Get All KOLs")
 	@GetMapping("")
 	public ResponseEntity<List<KOL>> getAllKOLs(@RequestParam(required = false) String name) {
 		try {
@@ -48,6 +56,40 @@ public class KOLController {
 			}
 
 			return new ResponseEntity<>(KOLs, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("Details")
+	public ResponseEntity<List<KOLSearchResponse>> getAllKOLDetails(@RequestParam(required = false) String name) {
+		try {
+			List<KOL> KOLs = new ArrayList<KOL>();
+			List<InstagramUser> instagrams = new ArrayList<InstagramUser>();
+
+			KOLRepository.findAll().forEach(KOLs::add);
+			_instagramUserRepository.findAll().forEach(instagrams::add);
+			if (KOLs.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			List<KOLSearchResponse> responses = new ArrayList<KOLSearchResponse>();
+			for (KOL kol : KOLs) {
+				KOLSearchResponse model = new KOLSearchResponse();
+				model.id = kol.getId();
+				model.name = kol.getName();
+				model.otherName = kol.getOtherName();
+				model.instagramId = kol.getInstagramId();
+				model.youtubeId = kol.getYoutubeChannel().getId();
+				model.youtubeChannel = kol.getYoutubeChannel();
+				model.instagramUser = instagrams.stream()
+                .filter(x -> x.getId() == kol.getInstagramId())
+                .findFirst();
+
+				responses.add(model);
+			}
+			return new ResponseEntity<>(responses, HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -74,7 +74,7 @@ const InstagramPostListView = ({ instagramUserId }) => {
                     post.mediaUrl ? (
                       post.mediaUrl.includes("mp4") ? (
                         <video
-                          autoplay
+                          autoPlay
                           controls
                           style={{
                             display: "block",

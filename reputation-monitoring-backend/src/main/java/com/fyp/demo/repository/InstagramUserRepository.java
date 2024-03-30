@@ -7,4 +7,5 @@ import com.fyp.demo.model.entity.InstagramUser;
 
 public interface InstagramUserRepository extends JpaRepository<InstagramUser, Integer> {
   List<InstagramUser> findByNameContaining(String name);
+  List<InstagramUser> findByKolId(Integer kolId);
 }

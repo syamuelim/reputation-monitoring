@@ -14,10 +14,10 @@ export default ReputationChart;
 function ReputationChart() {
   const apx = (size = 0) => {
     let width = Dimensions.get("window").width;
-    if (width > 750) {
+    if (width > 420) {
       return size;
     }
-    return (width / 750) * size;
+    return (width / 420) * size;
   };
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,6 @@ function ReputationChart() {
     var tempData = [];
     state.influencers.forEach(async (influencer) => {
       if (influencer.selected == true) {
-        console.log(influencer);
         // find reputation data
         const reputationResponse = await reputationService.getReputationById(
           influencer.id,
@@ -101,7 +100,6 @@ function ReputationChart() {
       data: data.map(({ rating }) => rating),
       svg: { stroke: "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);})}, // random color
     };
-    console.log(dataObject)
     return dataObject;
   }
 
@@ -116,7 +114,7 @@ function ReputationChart() {
           <View
             style={{
               flexDirection: "row",
-              width: apx(750),
+              width: apx(420),
               height: apx(270),
               alignSelf: "center",
             }}
@@ -127,7 +125,8 @@ function ReputationChart() {
                 data={data}
                 curve={shape.curveMonotoneX} //curve line
                 contentInset={{ top: apx(40), bottom: apx(40) }}
-                animate
+                animate={null}
+                animationDuration={null}
                 svg={{ fill: "url(#gradient)" }}
               >
                 <Grid />
@@ -136,7 +135,7 @@ function ReputationChart() {
             </View>
 
             <YAxis
-              style={{ width: apx(130) }}
+              style={{ width: apx(30) }}
               data={data[0].data}
               contentInset={{ top: apx(40), bottom: apx(40) }}
               svg={{ fontSize: apx(20), fill: "#617485" }}
@@ -146,7 +145,7 @@ function ReputationChart() {
             style={{
               alignSelf: "center",
               // marginTop: apx(57),
-              width: apx(750),
+              width: apx(420),
               height: apx(60),
             }}
             numberOfTicks={7}

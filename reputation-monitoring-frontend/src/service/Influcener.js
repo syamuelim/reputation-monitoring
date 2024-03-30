@@ -1,11 +1,12 @@
 import axios from "axios";
 import { baseUrl } from "../../AppConfig";
 const influencerRootPath = baseUrl + "api/kol/";
+const influencerSearchPath = influencerRootPath + "Details";
 const influencerCreatePath = influencerRootPath + "create";
 const influencerGetIdPath = influencerRootPath + ":id";
 
 export const getInfluencers = () => {
-  return axios.get(influencerRootPath);
+  return axios.get(influencerSearchPath);
 };
 
 export const getInfluencerById = (id) => {
