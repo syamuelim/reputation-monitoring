@@ -58,7 +58,10 @@ function ReputationChart() {
           tempData.push(formDataObject(reputationResponse.data));
           setXAxis(
             reputationResponse.data.map(({ reputationAt }) =>
-              new Date(reputationAt).toLocaleDateString("en-US")
+              new Date(reputationAt).toLocaleDateString("en-GB", {
+                year: "2-digit",
+                month: "short",
+              })
             )
           );
         } else {
@@ -73,6 +76,7 @@ function ReputationChart() {
           }).length
         ) {
           // set the data to the table
+          console.log(tempData);
           setData(tempData);
           setLoading(false);
         }
@@ -81,24 +85,39 @@ function ReputationChart() {
   };
 
   const Decorator = ({ x, y, data }) => {
-    return data.map((value, index) =>
-      value.data.map((value, index) => (
+    return data.map((valueMain, index) =>
+      valueMain.data.map((value, index) => (
         <Circle
           key={index}
           cx={x(index)}
           cy={y(value)}
           r={4}
-          stroke={"rgb(134, 65, 244)"}
+          stroke={valueMain.svg.stroke}
           fill={"white"}
         />
       ))
     );
   };
 
+  const Shadow = ({ line }) => (
+    <Path
+        key={'shadow'}
+        y={2}
+        d={line}
+        fill={'none'}
+        strokeWidth={4}
+        stroke={'rgba(134, 65, 244, 0.2)'}
+    />
+)
+
   function formDataObject(data) {
     var dataObject = {
       data: data.map(({ rating }) => rating),
-      svg: { stroke: "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);})}, // random color
+      svg: {
+        stroke: "#000000".replace(/0/g, function () {
+          return (~~(Math.random() * 16)).toString(16);
+        }),
+      }, // random color
     };
     return dataObject;
   }
@@ -114,52 +133,51 @@ function ReputationChart() {
           <View
             style={{
               flexDirection: "row",
-              width: apx(420),
-              height: apx(270),
+              width: "97%",
+              height: apx(300),
               alignSelf: "center",
             }}
           >
+            <YAxis
+              style={{ width: "5%" }}
+              data={data[0].data}
+              contentInset={{ top: apx(20), bottom: apx(20) }}
+              svg={{ fontSize: apx(16), fill: "#617485" }}
+              numberOfTicks={5}
+            />
             <View style={{ flex: 1 }}>
               <LineChart
                 style={{ flex: 1 }}
                 data={data}
                 curve={shape.curveMonotoneX} //curve line
-                contentInset={{ top: apx(40), bottom: apx(40) }}
+                contentInset={{ top: apx(20), bottom: apx(20), left: apx(10), right: apx(10) }}
                 animate={null}
-                animationDuration={null}
-                svg={{ fill: "url(#gradient)" }}
+                animationDuration={0}
+                strokeWidth={undefined}
+                svg={{ fill: "url(#gradient)", strokeWidth: 3 }}
               >
                 <Grid />
+                <Shadow />
                 <Decorator />
               </LineChart>
             </View>
-
-            <YAxis
-              style={{ width: apx(30) }}
-              data={data[0].data}
-              contentInset={{ top: apx(40), bottom: apx(40) }}
-              svg={{ fontSize: apx(20), fill: "#617485" }}
-            />
           </View>
           <XAxis
             style={{
               alignSelf: "center",
-              // marginTop: apx(57),
-              width: apx(420),
-              height: apx(60),
+              width: "92%",
+              height: apx(30),
             }}
-            numberOfTicks={7}
             data={data[0].data}
-            formatLabel={(value, index) => xAxis[value]}
-            contentInset={{
-              left: apx(36),
-              right: apx(130),
-            }}
+            formatLabel={(value, index) => ( index % 2 == 1 ? null :xAxis[index])}
             svg={{
-              fontSize: apx(20),
+              fontSize: apx(16),
               fill: "#617485",
-              y: apx(20),
+              originY: 35,
+              y: 10,
+              x: 10,
             }}
+            contentInset={{  left: apx(20)}}
           />
         </View>
       )}
@@ -175,5 +193,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     border: "1px solid #c6c6c6",
     borderRadius: "8px",
+    boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)"
   },
 });

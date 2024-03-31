@@ -56,8 +56,8 @@ const apx = (size = 0) => {
 export default function InflucenerTable() {
     const { state, dispatch } = useInfluencerContext();
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: apx(330), border: "1px solid #c6c6c6", borderRadius: "8px"}} >
+        <Paper sx={{ width: '100%', overflow: 'hidden', border: "1px solid #c6c6c6", borderRadius: "8px" }}>
+            <TableContainer sx={{ maxHeight: apx(330), height: apx(330), }} >
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>

@@ -24,17 +24,24 @@ const DashboardScreen = ({ navigation }) => {
           <Grid xs={12} sm={12} md={12}>
             <Header></Header>
           </Grid>
-          <Grid xs={12} sm={12} md={2}>
-            <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
+          <Grid xs={12} sm={12} md={10} container  rowGap={1}>
+            <Grid xs={12} sm={12} md={2}>
+              <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
+            </Grid>
+            <Grid xs={12} sm={12} md={10}>
+              {<ChartHub selectedChartIndex={selectedChartIndex}></ChartHub>}
+            </Grid>
+            <Grid xs={12} sm={12} md={12}>
+              <InflucenerTable></InflucenerTable>
+            </Grid>
           </Grid>
-          <Grid xs={12} sm={12} md={4}>
-            { <ChartHub selectedChartIndex={selectedChartIndex}></ChartHub> }
+          <Grid xs={12} sm={12} md={2} container  rowGap={1}>
+          <Grid xs={12}>
+            <InstagramPostListView
+              instagramUserId={152}
+            ></InstagramPostListView>
           </Grid>
-          <Grid xs={12} sm={12} md={6}>
-            <InflucenerTable ></InflucenerTable>
-          </Grid>
-          <Grid xs={9}>
-            <InstagramPostListView instagramUserId={102}></InstagramPostListView>
+
           </Grid>
         </Grid>
       </Container>

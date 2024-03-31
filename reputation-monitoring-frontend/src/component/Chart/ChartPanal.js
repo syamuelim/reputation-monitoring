@@ -30,7 +30,7 @@ const ChartPanal = ({ navigation, onMessage }) => {
 
   return (
     <SafeAreaView>
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }} height={apx(330)} border={"1px solid #c6c6c6"} borderRadius={"8px"}>
+      <Box sx={{ width: "100%", bgcolor: "background.paper", boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)" }} height={apx(330)} border={"1px solid #c6c6c6"} borderRadius={"8px"}>
         <List component="nav" aria-label="main mailbox folders" disablePadding>
           <ListItemButton
             selected={selectedIndex === 0}

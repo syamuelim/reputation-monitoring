@@ -44,7 +44,15 @@ const InstagramPostListView = ({ instagramUserId }) => {
   return (
     <SafeAreaView>
       <Box
-        sx={{ width: "100%", bgcolor: "background.paper" }}
+        sx={{
+          maxHeight: 660,
+          width: "100%",
+          bgcolor: "background.paper",
+          overflowY: "scroll",
+          overflowX: "hidden",
+          boxShadow:
+            "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+        }}
         border={"1px solid #c6c6c6"}
         borderRadius={"8px"}
       >
@@ -53,12 +61,13 @@ const InstagramPostListView = ({ instagramUserId }) => {
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
+            width: "100%",
           }}
         >
           <Grid
             container
             columnSpacing={1}
-            sx={{ justifyContent: "spaceBetween", margin: "0 4px 0 4px" }}
+            sx={{ margin: "0 4px 0 4px", justifyContent: "space-around" }}
           >
             {(posts.length === 0 ? Array.from(new Array(3)) : posts).map(
               (post, index) => (
