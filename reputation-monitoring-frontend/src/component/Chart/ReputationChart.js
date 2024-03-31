@@ -111,6 +111,7 @@ function ReputationChart() {
 )
 
   function formDataObject(data) {
+    console.log(data, state.influencers)
     var dataObject = {
       data: data.map(({ rating }) => rating),
       svg: {

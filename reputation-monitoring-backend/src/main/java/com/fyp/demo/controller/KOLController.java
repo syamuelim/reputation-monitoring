@@ -85,7 +85,7 @@ public class KOLController {
 				model.instagramUser = instagrams.stream()
                 .filter(x -> x.getId() == kol.getInstagramId())
                 .findFirst();
-
+				model.ColorCode = kol.getColorCode();	
 				responses.add(model);
 			}
 			return new ResponseEntity<>(responses, HttpStatus.OK);
@@ -110,7 +110,7 @@ public class KOLController {
 	public ResponseEntity<KOL> createKOL(@RequestBody KOL KOL) {
 		try {
 			KOL _KOL = KOLRepository
-					.save(new KOL(KOL.getName(), KOL.getOtherName()));
+					.save(new KOL(KOL.getName(), KOL.getOtherName(), KOL.getColorCode()));
 			return new ResponseEntity<>(_KOL, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

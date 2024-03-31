@@ -15,7 +15,7 @@ const influencerReducer = (state, action) => {
         ...state,
         influencers: action.payload.map((element) => {
           if (first) {
-            // first = false;
+            first = false;
             return { ...element, selected: true };
           } else {
             return { ...element, selected: false };

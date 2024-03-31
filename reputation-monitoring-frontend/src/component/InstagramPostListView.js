@@ -45,7 +45,8 @@ const InstagramPostListView = ({ instagramUserId }) => {
     <SafeAreaView>
       <Box
         sx={{
-          maxHeight: 660,
+          maxHeight: 670,
+          height: 670,
           width: "100%",
           bgcolor: "background.paper",
           overflowY: "scroll",
@@ -64,6 +65,19 @@ const InstagramPostListView = ({ instagramUserId }) => {
             width: "100%",
           }}
         >
+          <Typography
+            sx={{
+              alignSelf: "center",
+              fontWeight: "bold",
+              position: "sticky",
+              top: 0,
+              background: "white",
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
+            Latest Posts
+          </Typography>
           <Grid
             container
             columnSpacing={1}
@@ -84,7 +98,7 @@ const InstagramPostListView = ({ instagramUserId }) => {
                       post.mediaUrl.includes("mp4") ? (
                         <video
                           autoPlay
-                          controls
+                          muted
                           style={{
                             display: "block",
                             objectFit: "cover",

@@ -13,10 +13,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -24,7 +24,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
@@ -50,7 +50,9 @@ const Header = () => {
   const [form, setForm] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const [openStatus, setOpenStatus] = React.useState(false);
-  const [loadingStatusText, setLoadingStatusText] = React.useState("Loading Instagram Data!");
+  const [loadingStatusText, setLoadingStatusText] = React.useState(
+    "Loading Instagram Data!"
+  );
 
   const [youtubeList, setYoutubeList] = React.useState([]);
   // temp data only
@@ -96,10 +98,10 @@ const Header = () => {
   // finish all youtube fetching
   useEffect(() => {
     if (confirmedYoutubeChannel) {
-      handleLogin()
-      setYoutubeSelectDialog(false)
-      handleLoadingStatusText("Loading Instagram Data!")
-      handleClickOpenStatus()
+      handleLogin();
+      setYoutubeSelectDialog(false);
+      handleLoadingStatusText("Loading Instagram Data!");
+      handleClickOpenStatus();
     }
   }, [confirmedYoutubeChannel]);
 
@@ -175,6 +177,9 @@ const Header = () => {
     const kolCreateResponse = await influcenerService.postInfluencers({
       name: form.instagramUserName,
       otherName: form.instagramUserName,
+      colorCode: "#000000".replace(/0/g, function () {
+        return (~~(Math.random() * 16)).toString(16);
+      }),
     });
 
     // create instagram
@@ -194,7 +199,7 @@ const Header = () => {
       channelName: confirmedYoutubeChannel.snippet.title,
       followers: confirmedYoutubeChannel.statistics.subscriberCount,
       video_published: confirmedYoutubeChannel.statistics.videoCount,
-      iconUrl: confirmedYoutubeChannel.snippet.thumbnails.default.url
+      iconUrl: confirmedYoutubeChannel.snippet.thumbnails.default.url,
     });
 
     // update kol's youtube id and instagram id
@@ -236,14 +241,14 @@ const Header = () => {
         postList
       );
 
-    handleClose()
-    handleCloseStatus()
-    getInfluencers()
+    handleClose();
+    handleCloseStatus();
+    getInfluencers();
   };
 
   let loadBusinessAccount = async () => {
     if (igUserId && response && form.instagramUserName) {
-      setLoadingStatusText("Loading Instagram Data!")
+      setLoadingStatusText("Loading Instagram Data!");
       const res = await facebookService.getBusinessAccount(
         igUserId,
         form.instagramUserName,
@@ -443,8 +448,21 @@ const Header = () => {
           </DialogActions>
         </Dialog>
         <Dialog open={openStatus} onClose={handleCloseStatus}>
-          <DialogTitle sx={{ backgroundColor: theme.palette.coreGreen.main, color: theme.palette.coreGreen.contrastText }}>{loadingStatusText}</DialogTitle>
-          <DialogContent sx={{ display: 'flex', justifyContent: "center", backgroundColor: theme.palette.coreGreen.main }}>
+          <DialogTitle
+            sx={{
+              backgroundColor: theme.palette.coreGreen.main,
+              color: theme.palette.coreGreen.contrastText,
+            }}
+          >
+            {loadingStatusText}
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              backgroundColor: theme.palette.coreGreen.main,
+            }}
+          >
             <CircularProgress color="coreWhite" />
           </DialogContent>
         </Dialog>
@@ -453,15 +471,27 @@ const Header = () => {
           <DialogContent>
             {youtubeList.map((channel, index) => (
               <View key={index}>
-                <ListItemButton onClick={youtubeSelectDialogOnclick(channel)}
-                  sx={selectedYoutubeChannel.etag == channel.etag ?
-                    { borderRadius: "8px", bgcolor: "#5AC8C5", color: "white" } : {}}
+                <ListItemButton
+                  onClick={youtubeSelectDialogOnclick(channel)}
+                  sx={
+                    selectedYoutubeChannel.etag == channel.etag
+                      ? {
+                          borderRadius: "8px",
+                          bgcolor: "#5AC8C5",
+                          color: "white",
+                        }
+                      : {}
+                  }
                 >
                   <ListItemAvatar>
-                    <Avatar src={channel.snippet.thumbnails.default.url}>
-                    </Avatar>
+                    <Avatar
+                      src={channel.snippet.thumbnails.default.url}
+                    ></Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={'Name: ' + channel.snippet.channelTitle} secondary={'Description: ' + channel.snippet.description} />
+                  <ListItemText
+                    primary={"Name: " + channel.snippet.channelTitle}
+                    secondary={"Description: " + channel.snippet.description}
+                  />
                 </ListItemButton>
               </View>
             ))}
@@ -479,7 +509,7 @@ const Header = () => {
           </DialogContent>
         </Dialog>
       </ThemeProvider>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 

@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ChartHub from "../component/Chart/ChartHub";
 import ChartPanal from "../component/Chart/ChartPanal";
 import InstagramPostListView from "../component/InstagramPostListView";
+import YoutubeVideolistView from "../component/YoutubeVideoListView";
 import Header from "../component/header";
 import InflucenerTable from "../component/DataTable";
 import Container from "@mui/material/Box";
@@ -24,7 +25,7 @@ const DashboardScreen = ({ navigation }) => {
           <Grid xs={12} sm={12} md={12}>
             <Header></Header>
           </Grid>
-          <Grid xs={12} sm={12} md={10} container  rowGap={1}>
+          <Grid xs={12} sm={12} md={8} container rowGap={1}>
             <Grid xs={12} sm={12} md={2}>
               <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
             </Grid>
@@ -35,13 +36,17 @@ const DashboardScreen = ({ navigation }) => {
               <InflucenerTable></InflucenerTable>
             </Grid>
           </Grid>
-          <Grid xs={12} sm={12} md={2} container  rowGap={1}>
-          <Grid xs={12}>
-            <InstagramPostListView
-              instagramUserId={152}
-            ></InstagramPostListView>
-          </Grid>
-
+          <Grid xs={12} sm={12} md={4} container rowGap={1}>
+            <Grid xs={12} sm={12} md={6}>
+              <InstagramPostListView
+                instagramUserId={152}
+              ></InstagramPostListView>
+            </Grid>
+            <Grid xs={12} sm={12} md={6}>
+              <YoutubeVideolistView
+                youtubeChannelId={"UCNdIxz7txarVwbq3BvUJTUQ"}
+              ></YoutubeVideolistView>
+            </Grid>
           </Grid>
         </Grid>
       </Container>

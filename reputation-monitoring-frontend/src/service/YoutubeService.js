@@ -2,6 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../../AppConfig";
 const youtubeRootPath = baseUrl + "api/youtube_channel/";
 const youtubeExternalPath = youtubeRootPath + "external/channel";
+const youtubeExternalCommentPath =  youtubeExternalPath + "/comments";
 const youtubeExternalChannelPath = youtubeExternalPath + "/Details";
 const youtubeCreatePath = youtubeRootPath + "create";
 const youtubeGetIdPath = youtubeRootPath + ":id";
@@ -18,6 +19,12 @@ export const getExternalYoutbeChannels = (request) => {
 
 export const getExternalYoutbeChannelDetails = (request) => {
   return axios.get(youtubeExternalChannelPath, {
+    params: request,
+  });
+};
+
+export const getExternalYoutbeChannelComments = (request) => {
+  return axios.get(youtubeExternalCommentPath, {
     params: request,
   });
 };

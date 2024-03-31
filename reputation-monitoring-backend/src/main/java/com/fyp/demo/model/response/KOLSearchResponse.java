@@ -19,6 +19,8 @@ public class KOLSearchResponse {
     public Integer instagramId;
     public Integer youtubeId;
 
+    public String ColorCode;
+    
     public YoutubeChannel youtubeChannel;
     public Optional<InstagramUser> instagramUser;
 
