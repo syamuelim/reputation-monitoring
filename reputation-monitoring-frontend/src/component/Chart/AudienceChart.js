@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import * as shape from "d3-shape";
 import { useInfluencerContext } from "../../service/StateContext";
 
-import * as reputationService from "../../service/ReputationService";
+import * as influcenerService from "../../service/Influcener";
 
 export default AudienceChart;
 
@@ -25,38 +25,30 @@ function AudienceChart() {
     const { state, dispatch } = useInfluencerContext();
 
     useEffect(() => {
-        loadReputationById(
-            "2023-01-01T00:00:00",
-            "2024-01-01T00:00:00"
-        );
+        loadAudience();
     }, []);
 
     useEffect(() => {
         setLoading(true);
-        loadReputationById(
-            "2023-01-01T00:00:00",
-            "2024-01-01T00:00:00"
-        );
+        loadAudience();
     }, [state.influencers]);
 
-    let loadReputationById = async (startDate, endDate) => {
+    let loadAudience = async () => {
         var tempData = [];
         state.influencers.forEach(async (influencer) => {
             if (influencer.selected == true) {
                 // find reputation data
-                const reputationResponse = await reputationService.getReputationById(
+                const audiecneResponse = await influcenerService.getAudience(
                     influencer.id,
-                    startDate,
-                    endDate
                 );
 
                 // create data matrix
                 // if there is no record
                 if (tempData.length == 0) {
-                    tempData.push(formDataObject(reputationResponse.data));
+                    tempData.push(formDataObject(audiecneResponse.data));
                     setXAxis(
-                        reputationResponse.data.map(({ reputationAt }) =>
-                            new Date(reputationAt).toLocaleDateString("en-GB", {
+                        audiecneResponse.data.map(({ createdAt }) =>
+                            new Date(createdAt).toLocaleDateString("en-GB", {
                                 year: "2-digit",
                                 month: "short",
                             })
@@ -64,7 +56,7 @@ function AudienceChart() {
                     );
                 } else {
                     // if records exist
-                    tempData.push(formDataObject(reputationResponse.data));
+                    tempData.push(formDataObject(audiecneResponse.data));
                 }
 
                 if (
