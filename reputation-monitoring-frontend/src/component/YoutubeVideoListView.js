@@ -90,7 +90,7 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
                     comment.snippet.topLevelComment.snippet.authorDisplayName
                   }
                   secondary={
-                    <View display="flex">
+                    <Typography display="flex" sx={{flexDirection: "column"}}>
                       <Typography variant="caption" color="text.secondary">
                         {comment.snippet.topLevelComment.snippet.textDisplay}
                       </Typography>
@@ -98,7 +98,7 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
                         variant="caption"
                         color="text.secondary"
                       >{`likes: ${comment.snippet.topLevelComment.snippet.likeCount}`}</Typography>
-                    </View>
+                    </Typography>
                   }
                 ></ListItemText>
               </ListItem>

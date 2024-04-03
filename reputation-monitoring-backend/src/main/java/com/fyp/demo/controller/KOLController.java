@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fyp.demo.model.entity.InstagramPost;
 import com.fyp.demo.model.entity.InstagramUser;
 import com.fyp.demo.model.entity.KOL;
+import com.fyp.demo.model.entity.YoutubeChannel;
+import com.fyp.demo.model.request.KOLAudienceUpdateRequest;
 import com.fyp.demo.model.request.KOLCreateRequest;
 import com.fyp.demo.model.response.KOLSearchResponse;
 import com.fyp.demo.repository.InstagramPostRepository;
 import com.fyp.demo.repository.InstagramUserRepository;
 import com.fyp.demo.repository.KOLRepository;
+import com.fyp.demo.repository.YoutubeChannelRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,6 +42,9 @@ public class KOLController {
 
 	@Autowired
 	InstagramUserRepository _instagramUserRepository;
+	
+	@Autowired
+	YoutubeChannelRepository _youtubeChannelRepository;
 
 	@Operation(summary = "Get All KOLs")
 	@GetMapping("")
@@ -127,6 +133,29 @@ public class KOLController {
 			_KOL.setInstagramId(KOL.getInstagramId());
 			_KOL.setYoutubeChannel(KOL.getYoutubeChannel());
 			return new ResponseEntity<>(KOLRepository.save(_KOL), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping("{id}/audience")
+	public ResponseEntity<KOL> updateKOLAudience(@PathVariable("id") Integer id, @RequestBody KOLAudienceUpdateRequest request) {
+
+		Optional<KOL> KOLs = KOLRepository.findById(id);
+
+		if (KOLs.isPresent()) {
+			KOL _KOL = KOLs.get();
+			InstagramUser instagram = _instagramUserRepository.findById(_KOL.getInstagramId()).get();
+			YoutubeChannel youtubeChannel = _youtubeChannelRepository.findById(_KOL.getInstagramId()).get();
+			
+			instagram.setFollowers(request.instagramFollowerCount);
+			instagram.setPosts(id);(request.instagramPostCount);
+			youtubeChannel.setVideo_published(request.youTubeVideoCount);
+			youtubeChannel.setFollowers(request.youTubeFollowerCount);
+			_instagramUserRepository.save(instagram);
+			_youtubeChannelRepository.save(youtubeChannel);
+
+			return new ResponseEntity<>( _KOL,HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

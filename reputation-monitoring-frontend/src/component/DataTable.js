@@ -14,7 +14,8 @@ import AddReactionIcon from "@mui/icons-material/AddReaction";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import Groups2Icon from '@mui/icons-material/Groups2';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
-import { View } from "react-native";
+import Box from "@mui/material/Box";
+
 
 import { useInfluencerContext } from "../service/StateContext";
 const columns = [
@@ -25,7 +26,7 @@ const columns = [
     label: "YouTube Subscribers",
     format: (value) => value.toLocaleString("en-US"),
     key: 2,
-    icon: <AddReactionIcon />,
+    icon: <AddReactionIcon sx={{marginRight: "8px"}}/>,
   },
   {
     object: "youtubeChannel",
@@ -86,16 +87,16 @@ export default function InflucenerTable() {
                     color: "#fff",
                   }}
                 >
-                  <View
+                  <Box
                     style={{
                       alignItems: "center",
                       display: "flex",
                       flexDirection: "row"
                     }}
                   >
-                    <View style={{ marginRight: "8px" }}>{column.icon}</View>
+                    {column.icon}
                     {column.label}
-                  </View>
+                  </Box>
                 </TableCell>
               ))}
             </TableRow>
