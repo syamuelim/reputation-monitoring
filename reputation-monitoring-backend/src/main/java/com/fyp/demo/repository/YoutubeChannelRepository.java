@@ -7,5 +7,6 @@ import com.fyp.demo.model.entity.YoutubeChannel;
 
 public interface YoutubeChannelRepository extends JpaRepository<YoutubeChannel, Integer> {
   List<YoutubeChannel> findByChannelNameContaining(String channelName);
+  YoutubeChannel findByKolId(Integer kolId);
 }
 

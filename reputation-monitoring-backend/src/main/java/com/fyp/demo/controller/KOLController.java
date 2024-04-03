@@ -17,16 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fyp.demo.model.entity.InstagramPost;
 import com.fyp.demo.model.entity.InstagramUser;
 import com.fyp.demo.model.entity.KOL;
+import com.fyp.demo.model.entity.KolDataLog;
 import com.fyp.demo.model.entity.YoutubeChannel;
 import com.fyp.demo.model.request.KOLAudienceUpdateRequest;
-import com.fyp.demo.model.request.KOLCreateRequest;
 import com.fyp.demo.model.response.KOLSearchResponse;
-import com.fyp.demo.repository.InstagramPostRepository;
 import com.fyp.demo.repository.InstagramUserRepository;
 import com.fyp.demo.repository.KOLRepository;
+import com.fyp.demo.repository.KolDataLogRepository;
 import com.fyp.demo.repository.YoutubeChannelRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,6 +44,10 @@ public class KOLController {
 	
 	@Autowired
 	YoutubeChannelRepository _youtubeChannelRepository;
+
+		
+	@Autowired
+	KolDataLogRepository _KolDataLogRepository;
 
 	@Operation(summary = "Get All KOLs")
 	@GetMapping("")
@@ -132,6 +135,10 @@ public class KOLController {
 			KOL _KOL = KOLs.get();
 			_KOL.setInstagramId(KOL.getInstagramId());
 			_KOL.setYoutubeChannel(KOL.getYoutubeChannel());
+
+			// save first data log
+			InstagramUser instagerUser = _instagramUserRepository.findById(KOL.getInstagramId()).get();
+			_KolDataLogRepository.save(new KolDataLog(id, KOL.getYoutubeChannel(), instagerUser));
 			return new ResponseEntity<>(KOLRepository.save(_KOL), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -147,14 +154,16 @@ public class KOLController {
 			KOL _KOL = KOLs.get();
 			InstagramUser instagram = _instagramUserRepository.findById(_KOL.getInstagramId()).get();
 			YoutubeChannel youtubeChannel = _youtubeChannelRepository.findById(_KOL.getInstagramId()).get();
-			
+			// change the data of each account 
 			instagram.setFollowers(request.instagramFollowerCount);
-			instagram.setPosts(id);(request.instagramPostCount);
+			instagram.setPosts(request.instagramPostCount);
 			youtubeChannel.setVideo_published(request.youTubeVideoCount);
 			youtubeChannel.setFollowers(request.youTubeFollowerCount);
 			_instagramUserRepository.save(instagram);
 			_youtubeChannelRepository.save(youtubeChannel);
 
+			// save data log 
+			_KolDataLogRepository.save(new KolDataLog(id, request));
 			return new ResponseEntity<>( _KOL,HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
