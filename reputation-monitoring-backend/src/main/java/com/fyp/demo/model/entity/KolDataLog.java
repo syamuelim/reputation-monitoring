@@ -22,7 +22,7 @@ public class KolDataLog {
     private int id;
 
     @Column(name = "kol_id")
-    private Integer KolId;
+    private Integer kolId;
 
     @Column(name = "youtube_follower_count")
     private Integer YoutubeFollowerCount;
@@ -38,7 +38,7 @@ public class KolDataLog {
     private LocalDateTime createdAt;
 
     public KolDataLog(Integer KolId, KOLAudienceUpdateRequest request) {
-        this.KolId = KolId;
+        this.kolId = KolId;
         this.YoutubeFollowerCount = request.youTubeFollowerCount;
         this.YoutubeVideoPublished = request.youTubeVideoCount;
         this.InstagramCount = request.instagramFollowerCount;
@@ -47,7 +47,7 @@ public class KolDataLog {
     }
 
     public KolDataLog(Integer KolId, YoutubeChannel channel, InstagramUser user) {
-        this.KolId = KolId;
+        this.kolId = KolId;
         this.YoutubeFollowerCount = channel.getFollowers();
         this.YoutubeVideoPublished = channel.getVideo_published();
         this.InstagramCount = user.getFollowers();

@@ -14,7 +14,7 @@ import AlignVerticalCenterIcon from "@mui/icons-material/AlignVerticalCenter";
 import { Typography } from "@mui/material";
 
 const ChartPanal = ({ navigation, onMessage }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const apx = (size = 0) => {
     let width = Dimensions.get("window").width;
     if (width > 750) {

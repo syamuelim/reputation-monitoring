@@ -8,6 +8,7 @@ import * as shape from "d3-shape";
 import { useInfluencerContext } from "../../service/StateContext";
 
 import * as influcenerService from "../../service/Influcener";
+import * as kolDataLogService from "../../service/KolDataLogService";
 
 export default AudienceChart;
 
@@ -38,7 +39,7 @@ function AudienceChart() {
         state.influencers.forEach(async (influencer) => {
             if (influencer.selected == true) {
                 // find reputation data
-                const audiecneResponse = await influcenerService.getAudience(
+                const audiecneResponse = await kolDataLogService.getAudience(
                     influencer.id,
                 );
 
@@ -66,7 +67,6 @@ function AudienceChart() {
                     }).length
                 ) {
                     // set the data to the table
-                    console.log(tempData);
                     setData(tempData);
                     setLoading(false);
                 }
@@ -101,14 +101,13 @@ function AudienceChart() {
     )
 
     function formDataObject(data) {
-        console.log(data, state.influencers)
+        let kol = {}
+        if (data.length > 0) {
+            kol = state.influencers.find(obj => obj.id == data[0].kolId);
+        }
         var dataObject = {
-            data: data.map(({ rating }) => rating),
-            svg: {
-                stroke: "#000000".replace(/0/g, function () {
-                    return (~~(Math.random() * 16)).toString(16);
-                }),
-            }, // random color
+            data: data.map(({ instagramPostShared }) => instagramPostShared),
+            svg: { stroke: kol.colorCode }, // random color
         };
         return dataObject;
     }
@@ -134,7 +133,6 @@ function AudienceChart() {
                             data={data[0].data}
                             contentInset={{ top: apx(20), bottom: apx(20) }}
                             svg={{ fontSize: apx(16), fill: "#617485" }}
-                            numberOfTicks={5}
                         />
                         <View style={{ flex: 1 }}>
                             <LineChart

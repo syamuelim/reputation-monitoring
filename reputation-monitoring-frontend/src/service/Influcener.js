@@ -22,6 +22,6 @@ export const postInfluencers = (influencerData) => {
   return axios.post(influencerCreatePath, influencerData);
 };
 
-export const getAudience = (id) => {
-  return axios.get(influencerGetAudiencePath.replace(":id", id));
+export const updateAudience = (id, request) => {
+  return axios.put(influencerGetAudiencePath.replace(":id", id), request);
 };

@@ -111,14 +111,13 @@ function ReputationChart() {
 )
 
   function formDataObject(data) {
-    console.log(data, state.influencers)
+    let kol = {}
+    if (data.length > 0) {
+        kol = state.influencers.find(obj => obj.id == data[0].kolId);
+    }
     var dataObject = {
-      data: data.map(({ rating }) => rating),
-      svg: {
-        stroke: "#000000".replace(/0/g, function () {
-          return (~~(Math.random() * 16)).toString(16);
-        }),
-      }, // random color
+        data: data.map(({ rating }) => rating),
+        svg: { stroke: kol.colorCode }, // random color
     };
     return dataObject;
   }

@@ -7,5 +7,5 @@ import java.util.List;
 
 
 public interface KolDataLogRepository extends JpaRepository<KolDataLog, Integer> {
-    List<KolDataLog> findByKolId(Integer kolId);
+    List<KolDataLog> findAllByKolId(Integer kolId);
 }
