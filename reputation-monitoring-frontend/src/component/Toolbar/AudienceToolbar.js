@@ -28,16 +28,16 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
-import * as facebookService from "../service/FacebookService";
-import * as instagramService from "../service/InstagramService";
+import * as facebookService from "../../service/FacebookService";
+import * as instagramService from "../../service/InstagramService";
 
-import { facebookPermission } from "../Config/Menu";
+import { facebookPermission } from "../../Config/Menu";
 
-import { useInfluencerContext } from "../service/StateContext";
-import * as influcenerService from "../service/Influcener";
-import * as youtubeService from "../service/YoutubeService";
+import { useInfluencerContext } from "../../service/StateContext";
+import * as influcenerService from "../../service/Influcener";
+import * as youtubeService from "../../service/YoutubeService";
 
-const Toolbar = () => {
+const AudienceToolbar = () => {
     WebBrowser.maybeCompleteAuthSession();
     const [user, setUser] = useState(null);
     const [pageId, setPageId] = useState(null);
@@ -288,4 +288,4 @@ const theme = createTheme({
     },
 });
 
-export default Toolbar;
+export default AudienceToolbar;

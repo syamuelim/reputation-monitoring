@@ -7,7 +7,8 @@ import ChartPanal from "../component/Chart/ChartPanal";
 import InstagramPostListView from "../component/InstagramPostListView";
 import YoutubeVideolistView from "../component/YoutubeVideoListView";
 import Header from "../component/header";
-import Toolbar from "../component/Toolbar";
+import AudienceToolbar from "../component/Toolbar/AudienceToolbar";
+import ReputationToolbar from "../component/Toolbar/ReputationToolbar";
 import InflucenerTable from "../component/DataTable";
 import Container from "@mui/material/Box";
 import Grid from "@mui/system/Unstable_Grid";
@@ -15,10 +16,17 @@ import styled from "@mui/system/styled";
 
 const DashboardScreen = ({ navigation }) => {
   // set default chart
-  const [selectedChartIndex, setSelectedChartIndex] = useState(1);
+  const [selectedChartIndex, setSelectedChartIndex] = useState(0);
   const handleChartPanalMessage = (index) => {
     setSelectedChartIndex(index);
   };
+  function Toolbar() {
+    if (selectedChartIndex === 0) {
+      return <ReputationToolbar></ReputationToolbar>;
+    } else if (selectedChartIndex === 1) {
+      return <AudienceToolbar></AudienceToolbar>;
+    }
+  }
   return (
     <SafeAreaView>
       <Container paddingLeft={"8px"} paddingRight={"8px"}>
@@ -27,9 +35,9 @@ const DashboardScreen = ({ navigation }) => {
             <Header></Header>
           </Grid>
           <Grid xs={12} sm={12} md={8} container rowGap={1}>
-          <Grid xs={12} sm={12} md={12}>
+            <Grid xs={12} sm={12} md={12}>
               <Toolbar></Toolbar>
-            </Grid>            
+            </Grid>
             <Grid xs={12} sm={12} md={2}>
               <ChartPanal onMessage={handleChartPanalMessage}></ChartPanal>
             </Grid>

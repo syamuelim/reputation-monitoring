@@ -4,7 +4,9 @@ import React, { createContext, useContext, useReducer } from "react";
 const InfluencerContext = createContext();
 
 const initialState = {
-  influencers: []
+  influencers: [],
+  startDate: new Date().toISOString(),
+  endDate: new Date().toISOString(),
 };
 
 const influencerReducer = (state, action) => {
@@ -30,6 +32,16 @@ const influencerReducer = (state, action) => {
             ? { ...element, selected: !element.selected }
             : element
         ),
+      };
+    case "SET_START_DATE":
+      return {
+        ...state,
+        startDate: action.payload.startDate,
+      };
+    case "SET_END_DATE":
+      return {
+        ...state,
+        endDate: action.payload.endDate,
       };
     default:
       return state;
