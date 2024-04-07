@@ -28,8 +28,12 @@ public class KOL {
     @JoinColumn(name = "youtube_id")
     private YoutubeChannel youtubeChannel;
 
-	public KOL(String name, String otherName) {
+	@Column(name= "color_code")
+	private String colorCode;
+
+	public KOL(String name, String otherName, String colorCode) {
 		this.name = name;
 		this.otherName = otherName;
+		this.colorCode = colorCode;
 	}
 }

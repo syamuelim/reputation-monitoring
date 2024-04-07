@@ -64,6 +64,8 @@ DROP TABLE IF EXISTS 'instagram_post';
 CREATE TABLE 'instagram_post' (
   'id' integer primary key,
   'post_id' varchar(128),
+  'media_url' varchar(1000),
+  'comments_count' integer,
   'event_id' integer,
   'instagram_id' int,
   'content' text,
@@ -179,9 +181,6 @@ VALUES(12, 1, 3, 'ACTIVE', now(), '2023-12-01T00:00:00');
 
 
 INSERT INTO public.reputation
-(id, kol_id, rating, status, created_at, reputation_at)
-VALUES(13, 54, 5, 'ACTIVE', now(), '2023-01-01T00:00:00');
-INSERT INTO public.reputation
 (id, kol_id, rating, status, created_at , reputation_at)
 VALUES(14, 54, 2, 'ACTIVE', now(), '2023-02-01T00:00:00');
 INSERT INTO public.reputation
@@ -214,3 +213,28 @@ VALUES(23, 54, 2, 'ACTIVE', now(), '2023-11-01T00:00:00');
 INSERT INTO public.reputation
 (id, kol_id, rating, status, created_at, reputation_at)
 VALUES(24, 54, 1, 'ACTIVE', now(), '2023-12-01T00:00:00');
+
+INSERT INTO public.instagram
+(id, kol_id, instagram_user_id, name, posts, followers)
+VALUES(1, 54, 12281817, 'kyliejenner', now(), '6896', '398996545');
+
+INSERT INTO public.instagram_post
+( id, post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES( 1, '18026762923768321', 1, 'our 2 for $22 lip single valentine sale is happening NOW! kyliecosmetics \nhere’s my favorite new juicy lip combo 💦\n🤍 Precision Pout Lip Liner shade ‘Cinnamon’\n🤍 Tinted Butter Balm shade ‘Love That 4 U’\n🤍 Gloss Drip shade ‘Playfully Pink’', '748450', '2024-02-13T18:54:16+0000', 2642, null);
+INSERT INTO public.instagram_post
+( id,post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES(2, '18076133575412615', 1, 'starting my monday right alo', '3249782', '2024-02-12T15:35:59+0000', 6272, 'https://scontent.cdninstagram.com/v/t51.29350-15/426144312_1040089973755831_610218993483383279_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=18de74&_nc_ohc=DF3iOFG1Ri4AX_fTiYQ&_nc_oc=AQkxGlpZ3QJSApj2tWre80P5tm0ggMPDMdR1XZWJFsfcdyol3HMqqQSX0cPrPSnSBmo&_nc_ht=scontent.cdninstagram.com&edm=AL-3X8kEAAAA&oh=00_AfAwrccCQBJKAQYIqG70E_fZFhtXk9buIGuaq1rGjtbVSg&oe=65D16015');
+INSERT INTO public.instagram_post
+( id,post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES(3, '18002198576182675', 1, 'my new lip butter just dropped in a yummy vanilla caramel flavor and the results are in! this silky formula provides moisture for up to 24 hours!!! It has skincare ingredients like shea butter, jojoba seed oil, and cloudberry seed oil. our new lip butter is formulated with a moisture barrier complex that protects your lip barrier and improves dry and chapped lips. available now on kylieskin.com kylieskin', '1080177', '2024-02-11T04:34:08+0000', 2260, 'https://scontent.cdninstagram.com/v/t51.29350-15/425943494_1135247590749978_5175804932678144512_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=18de74&_nc_ohc=Gpk1M5O2a-UAX_FqOdy&_nc_ht=scontent.cdninstagram.com&edm=AL-3X8kEAAAA&oh=00_AfBWCkLU4ntxo6eQRB1msvZuTh6Z0Q52DYiugNlXa-pVkg&oe=65D10C65');
+INSERT INTO public.instagram_post
+( id,post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES( 4,'17940086444688366', 1, 'peachy glam using kyliecosmetics 🫶🏻🫶🏻🍑\n🤍 kylieskin Lip Butter \n🤍 Power Plush Foundation shade 4.5c \n🤍 Power Plush Concealer shade 4.5WN\n🤍 Glow Balm shade ‘doin the most’\n🤍 Kendall & Kylie eyeshadow palette\n🤍 Precision Pout Lip Liner shade ‘cappuccino’\n🤍 Matte Lip shade ‘dirty peach’\n🤍 High Gloss shade ‘one in a billion’', '2461871', '2024-02-11T03:29:03+0000', 8376, null);
+
+INSERT INTO public.instagram_post
+( id,post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES(5, '18008135279253365', 1, '🫶🏻🫶🏻', '4589641', '2024-02-10T00:46:56+0000', 10835, 'https://scontent.cdninstagram.com/v/t51.29350-15/426230381_399564329419178_3420469731240209928_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=18de74&_nc_ohc=Bln8M0bcc5UAX9Lvjn_&_nc_ht=scontent.cdninstagram.com&edm=AL-3X8kEAAAA&oh=00_AfAs3qzGI4cLg0JHHvL-MyfOTUC0_haPqZIjeowq5Vh-nQ&oe=65D204EE');
+
+INSERT INTO public.instagram_post
+(id, post_id, instagram_id, content, likes, created_at, comments_count, media_url)
+VALUES( 6,'17919612206779630', 1, 'kris jenner is quaking', '3950663', '2024-02-09T22:30:05+0000', 12548, 'https://scontent.cdninstagram.com/v/t51.29350-15/426064399_769419878401709_6841881175653310224_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=18de74&_nc_ohc=EhHYxatZSFsAX8u60jh&_nc_ht=scontent.cdninstagram.com&edm=AL-3X8kEAAAA&oh=00_AfBQgM0VPO_056wCHrh7EnwM5k0WHKOcGpkvNfCuJnrxYg&oe=65D191B0');

@@ -17,21 +17,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fyp.demo.model.entity.InstagramUser;
 import com.fyp.demo.model.entity.KOL;
+import com.fyp.demo.model.entity.KolDataLog;
+import com.fyp.demo.model.entity.YoutubeChannel;
+import com.fyp.demo.model.request.KOLAudienceUpdateRequest;
+import com.fyp.demo.model.response.KOLSearchResponse;
+import com.fyp.demo.repository.InstagramUserRepository;
 import com.fyp.demo.repository.KOLRepository;
+import com.fyp.demo.repository.KolDataLogRepository;
+import com.fyp.demo.repository.YoutubeChannelRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "KOL", description = "KOL")
-@RestController	
+@RestController
 @RequestMapping("/api/kol/")
 public class KOLController {
 
 	@Autowired
 	KOLRepository KOLRepository;
-	@Operation(
-      summary = "Get All KOLs")
+
+	@Autowired
+	InstagramUserRepository _instagramUserRepository;
+	
+	@Autowired
+	YoutubeChannelRepository _youtubeChannelRepository;
+
+		
+	@Autowired
+	KolDataLogRepository _KolDataLogRepository;
+
+	@Operation(summary = "Get All KOLs")
 	@GetMapping("")
 	public ResponseEntity<List<KOL>> getAllKOLs(@RequestParam(required = false) String name) {
 		try {
@@ -52,6 +70,40 @@ public class KOLController {
 		}
 	}
 
+	@GetMapping("Details")
+	public ResponseEntity<List<KOLSearchResponse>> getAllKOLDetails(@RequestParam(required = false) String name) {
+		try {
+			List<KOL> KOLs = new ArrayList<KOL>();
+			List<InstagramUser> instagrams = new ArrayList<InstagramUser>();
+
+			KOLRepository.findAll().forEach(KOLs::add);
+			_instagramUserRepository.findAll().forEach(instagrams::add);
+			if (KOLs.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			List<KOLSearchResponse> responses = new ArrayList<KOLSearchResponse>();
+			for (KOL kol : KOLs) {
+				KOLSearchResponse model = new KOLSearchResponse();
+				model.id = kol.getId();
+				model.name = kol.getName();
+				model.otherName = kol.getOtherName();
+				model.instagramId = kol.getInstagramId();
+				model.youtubeId = kol.getYoutubeChannel().getId();
+				model.youtubeChannel = kol.getYoutubeChannel();
+				model.instagramUser = instagrams.stream()
+                .filter(x -> x.getId() == kol.getInstagramId())
+                .findFirst();
+				model.ColorCode = kol.getColorCode();	
+				responses.add(model);
+			}
+			return new ResponseEntity<>(responses, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping("{id}")
 	public ResponseEntity<KOL> getKOLById(@PathVariable("id") Integer id) {
 		Optional<KOL> KOLs = KOLRepository.findById(id);
@@ -67,7 +119,7 @@ public class KOLController {
 	public ResponseEntity<KOL> createKOL(@RequestBody KOL KOL) {
 		try {
 			KOL _KOL = KOLRepository
-					.save(new KOL(KOL.getName(), KOL.getOtherName()));
+					.save(new KOL(KOL.getName(), KOL.getOtherName(), KOL.getColorCode()));
 			return new ResponseEntity<>(_KOL, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,8 +133,38 @@ public class KOLController {
 
 		if (KOLs.isPresent()) {
 			KOL _KOL = KOLs.get();
-			_KOL.setName(KOL.getName());
+			_KOL.setInstagramId(KOL.getInstagramId());
+			_KOL.setYoutubeChannel(KOL.getYoutubeChannel());
+
+			// save first data log
+			InstagramUser instagerUser = _instagramUserRepository.findById(KOL.getInstagramId()).get();
+			_KolDataLogRepository.save(new KolDataLog(id, KOL.getYoutubeChannel(), instagerUser));
 			return new ResponseEntity<>(KOLRepository.save(_KOL), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping("{id}/audience")
+	public ResponseEntity<KOL> updateKOLAudience(@PathVariable("id") Integer id, @RequestBody KOLAudienceUpdateRequest request) {
+
+		Optional<KOL> KOLs = KOLRepository.findById(id);
+
+		if (KOLs.isPresent()) {
+			KOL _KOL = KOLs.get();
+			InstagramUser instagram = _instagramUserRepository.findById(_KOL.getInstagramId()).get();
+			YoutubeChannel youtubeChannel = _youtubeChannelRepository.findById(_KOL.getInstagramId()).get();
+			// change the data of each account 
+			instagram.setFollowers(request.instagramFollowerCount);
+			instagram.setPosts(request.instagramPostCount);
+			youtubeChannel.setVideo_published(request.youTubeVideoCount);
+			youtubeChannel.setFollowers(request.youTubeFollowerCount);
+			_instagramUserRepository.save(instagram);
+			_youtubeChannelRepository.save(youtubeChannel);
+
+			// save data log 
+			_KolDataLogRepository.save(new KolDataLog(id, request));
+			return new ResponseEntity<>( _KOL,HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

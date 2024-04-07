@@ -9,17 +9,19 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@expo/webpack-config": "^19.0.0",
     "@mui/icons-material": "^5.15.2",
-    "@mui/material": "^5.15.2",
+    "@mui/material": "^5.15.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.10",
+    "@mui/x-date-pickers": "^7.1.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-material/core": "^1.3.7",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "axios": "^1.5.0",
+    "dayjs": "^1.11.10",
     "expo": "~49.0.11",
     "expo-auth-session": "~5.0.2",
     "expo-facebook": "^12.2.0",
@@ -37,9 +39,12 @@
     "react-native-safe-area-context": "^4.8.2",
     "react-native-safe-area-view": "github:react-native-community/react-native-safe-area-view",
     "react-native-screens": "^3.29.0",
+    "react-native-svg": "^13.9.0",
+    "react-native-svg-charts": "^5.4.0",
     "react-native-web": "~0.19.6",
     "react-native-webview": "^13.6.4",
-    "styled-components": "^6.1.6"
+    "styled-components": "^6.1.6",
+    "typescript": "^5.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
