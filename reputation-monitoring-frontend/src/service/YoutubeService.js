@@ -6,6 +6,7 @@ const youtubeExternalCommentPath =  youtubeExternalPath + "/comments";
 const youtubeExternalChannelPath = youtubeExternalPath + "/Details";
 const youtubeCreatePath = youtubeRootPath + "create";
 const youtubeGetIdPath = youtubeRootPath + ":id";
+const youtubeResponsePath = youtubeGetIdPath + "/response";
 
 export const getYoutbeChannel = () => {
   return axios.get(youtubeRootPath);
@@ -31,6 +32,10 @@ export const getExternalYoutbeChannelComments = (request) => {
 
 export const getYoutubeChannelById = (id) => {
   return axios.get(youtubeGetIdPath.replace(":id", id));
+};
+
+export const youtubeResponseCreate = (id, request) => {
+  return axios.post(youtubeResponsePath.replace(":id", id), request);
 };
 
 export const postYoutubeChannel = (youtubeChannelData) => {

@@ -12,165 +12,62 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
-import * as facebookService from "../../service/FacebookService";
-import * as instagramService from "../../service/InstagramService";
 import dayjs from "dayjs";
 import "dayjs/locale/en-gb";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 
-import { facebookPermission } from "../../Config/Menu";
-
 import { useInfluencerContext } from "../../service/StateContext";
-import * as influcenerService from "../../service/Influcener";
+import * as reputationService from "../../service/ReputationService";
 import * as youtubeService from "../../service/YoutubeService";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 
 const ReputationToolbar = () => {
-  WebBrowser.maybeCompleteAuthSession();
-  const [user, setUser] = useState(null);
-  const [pageId, setPageId] = useState(null);
-  const [igUserId, setIgUserId] = useState(null);
-  const [request, response, promptAsync] = Facebook.useAuthRequest({
-    clientId: "652157000425074",
-    scopes: facebookPermission,
-    configId: "3654644834792585",
-  });
-
-  const [result, setResult] = React.useState([]);
   const [openStatus, setOpenStatus] = React.useState(false);
 
   const { state, dispatch } = useInfluencerContext();
 
   useEffect(() => {}, []);
-  useEffect(() => {
-    loadUser();
-  }, [response]);
-
-  useEffect(() => {
-    loadData();
-  }, [user]);
-
-  useEffect(() => {
-    loadIgUserId();
-  }, [pageId]);
-
-  useEffect(() => {
-    loadBusinessAccount();
-  }, [igUserId]);
-
-  const handleLogin = async () => {
-    if (response) {
-      loadUser();
-    } else {
-      const result = await promptAsync();
-      if (result.type !== "success") {
-        return;
-      }
-    }
-  };
-
-  const loadUser = async () => {
-    if (response && response.type === "success" && response.authentication) {
-      (async () => {
-        const userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
-        );
-        const userInfo = await userInfoResponse.json();
-        setUser(userInfo);
-      })();
-    }
-  };
-  let loadData = async () => {
-    if (response) {
-      if (pageId) {
-        loadIgUserId();
-      } else {
-        const res = await facebookService.getPageId(
-          response.authentication.accessToken
-        );
-        setPageId(res.data.data[0].id);
-      }
-    }
-  };
-
-  let loadIgUserId = async () => {
-    if (response && pageId) {
-      if (igUserId) {
-        loadBusinessAccount();
-      } else {
-        const res = await facebookService.getInstagramUserId(
-          pageId,
-          response.authentication.accessToken
-        );
-        setIgUserId(res.data.instagram_business_account.id);
-      }
-    }
-  };
 
   const createEntity = async (result) => {
+    const commentData = [];
     for (let i = 0; i < result.length; i++) {
-      const res = await influcenerService.updateAudience(
-        result[i].kolId,
-        result[i]
+      const createResponse = await youtubeService.youtubeResponseCreate(
+        result[i].youtubeChannelId,
+        {
+          json: result[i].json,
+        }
       );
+      const res = await reputationService.createReputation({
+        kolId: result[i].kolId,
+        youtubeResponseId: createResponse.data.id,
+      });
     }
-    setResult([]);
     handleCloseStatus();
   };
 
-  let loadBusinessAccount = async () => {
-    if (igUserId && response) {
-      for (let i = 0; i < state.influencers.length; i++) {
-        let item = state.influencers[i];
-
-        if (item.selected) {
-          const res = await facebookService.getBusinessAccount(
-            igUserId,
-            item.instagramUser.name,
-            response.authentication.accessToken
-          );
-          result[i].instagramFollowerCount =
-            res.data.business_discovery.media_count;
-          result[i].instagramPostCount =
-            res.data.business_discovery.followers_count;
-        }
-      }
-
-      // save response
-      createEntity(result);
-    }
-  };
-
-  const handleGetLatestData = async () => {
+  const handleGenerateReputation = async () => {
     handleClickOpenStatus();
     let result = [];
     for (let i = 0; i < state.influencers.length; i++) {
       let item = state.influencers[i];
       if (item.selected) {
-        const response = await youtubeService.getExternalYoutbeChannelDetails({
+        const response = await youtubeService.getExternalYoutbeChannelComments({
           keyword: item.youtubeChannel.channelId,
+          IsByChannelId: true,
           maxResult: 1,
         });
         result.push({
           kolId: item.id,
-          instagramFollowerCount: null,
-          instagramPostCount: null,
-          youTubeFollowerCount:
-            response.data.items[0].statistics.subscriberCount,
-          youTubeVideoCount: response.data.items[0].statistics.videoCount,
+          youtubeChannelId: item.youtubeChannel.id,
+          json: JSON.stringify(response.data),
         });
       }
     }
-    setResult(result);
-    handleLogin();
-  };
-
-  const handleGenerateReputation = async () => {
+    createEntity(result);
   };
 
   const handleClickOpenStatus = () => {
@@ -294,7 +191,7 @@ const ReputationToolbar = () => {
               color: theme.palette.coreGreen.contrastText,
             }}
           >
-            Updating Data
+            Generating
           </DialogTitle>
           <DialogContent
             sx={{
