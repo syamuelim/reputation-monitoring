@@ -57,7 +57,7 @@ public class ReputationController {
 			RestTemplate restTemplate = new RestTemplate();
 
 			// Set the request URL
-			String url = "http://localhost:8000/reputation/";
+			String url = "http://localhost:8000/reputation/category";
 			
 			// Create headers with the desired content type
 			HttpHeaders headers = new HttpHeaders();

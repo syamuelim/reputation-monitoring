@@ -23,3 +23,9 @@ class InstagramResponse(models.Model):
     created_at = models.DateTimeField()
     class Meta:
         db_table = 'instagram_response' 
+        
+class YoutubeChannel(models.Model):
+    kol_id = models.IntegerField()
+    channel_name = models.CharField(max_length=128)
+    class Meta:
+        db_table = 'youtube_channel' 

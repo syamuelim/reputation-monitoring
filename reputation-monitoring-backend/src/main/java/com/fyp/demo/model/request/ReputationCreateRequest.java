@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class ReputationCreateRequest {
     public Integer kolId;
+    public Integer youtubeChannelId;
     public Integer youtubeResponseId;
 }

@@ -16,4 +16,10 @@ class InstagramResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = InstagramResponse
         fields = '__all__'
-        db_table = 'instagram_response' 
+        db_table = 'instagram_response'    
+                
+class YoutubeChannelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = YoutubeChannel
+        fields = '__all__'
+        db_table = 'youtube_channel' 

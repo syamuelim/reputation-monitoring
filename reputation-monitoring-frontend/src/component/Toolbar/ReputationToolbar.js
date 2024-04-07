@@ -43,6 +43,7 @@ const ReputationToolbar = () => {
       );
       const res = await reputationService.createReputation({
         kolId: result[i].kolId,
+        youtubeChannelId: result[i].youtubeChannelId,
         youtubeResponseId: createResponse.data.id,
       });
     }
