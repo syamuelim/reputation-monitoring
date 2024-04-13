@@ -13,7 +13,6 @@ import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 
 import * as youtubeService from "../service/YoutubeService";
-import noImg from "/assets/no_image.png";
 
 const YoutubeVideoListView = ({ youtubeChannelId }) => {
   const [youtubeComments, setYoutubeComments] = useState([]);
@@ -29,7 +28,7 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
       await youtubeService.getExternalYoutbeChannelComments({
         keyword: youtubeChannelId,
         IsByChannelId: true,
-        maxResult: 2,
+        maxResult: 10,
         // createdFrom: null,
         // createdTo: null
       });
@@ -41,8 +40,8 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
     <SafeAreaView>
       <Box
         sx={{
-          maxHeight: 670,
-          height: 670,
+          maxHeight: 738,
+          height: 738,
           width: "100%",
           bgcolor: "background.paper",
           overflowY: "scroll",

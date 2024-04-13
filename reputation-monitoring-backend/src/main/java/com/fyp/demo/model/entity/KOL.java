@@ -24,7 +24,7 @@ public class KOL {
 	@Column(name = "instagram_id")
 	private Integer instagramId;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
     @JoinColumn(name = "youtube_id")
     private YoutubeChannel youtubeChannel;
 

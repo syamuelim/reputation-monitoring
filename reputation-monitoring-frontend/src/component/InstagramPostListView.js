@@ -8,7 +8,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Pagination from "@mui/material/Pagination";
 
 import * as instagramService from "../service/InstagramService";
-import noImg from "/assets/no_image.png";
+import noImg from "../../assets/no_image.png";
 
 const InstagramPostListView = ({ instagramUserId }) => {
   const [posts, setPosts] = useState([]);
@@ -45,8 +45,8 @@ const InstagramPostListView = ({ instagramUserId }) => {
     <SafeAreaView>
       <Box
         sx={{
-          maxHeight: 670,
-          height: 670,
+          maxHeight: 738,
+          height: 738,
           width: "100%",
           bgcolor: "background.paper",
           overflowY: "scroll",
