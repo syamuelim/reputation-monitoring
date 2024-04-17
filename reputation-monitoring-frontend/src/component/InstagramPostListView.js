@@ -45,8 +45,8 @@ const InstagramPostListView = ({ instagramUserId }) => {
     <SafeAreaView>
       <Box
         sx={{
-          maxHeight: 670,
-          height: 670,
+          maxHeight: 738,
+          height: 738,
           width: "100%",
           bgcolor: "background.paper",
           overflowY: "scroll",

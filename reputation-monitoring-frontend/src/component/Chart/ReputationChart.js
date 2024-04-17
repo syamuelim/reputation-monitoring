@@ -43,20 +43,21 @@ function ReputationChart() {
 
   let loadReputationById = async (influencerIds, startDate, endDate) => {
     var tempData = [];
+    var tempX = [];
     state.influencers.forEach(async (influencer) => {
       if (influencer.selected == true) {
         // find reputation data
         const reputationResponse = await reputationService.getReputationById(
           influencer.id,
-          startDate,
-          endDate
+          state.startDate,
+          state.endDate
         );
 
         // create data matrix
         // if there is no record
         if (tempData.length == 0) {
           tempData.push(formDataObject(reputationResponse.data));
-          setXAxis(
+          tempX.push(
             reputationResponse.data.map(({ reputationAt }) =>
               new Date(reputationAt).toLocaleDateString("en-GB", {
                 year: "2-digit",
@@ -76,7 +77,8 @@ function ReputationChart() {
           }).length
         ) {
           // set the data to the table
-          console.log(tempData);
+          console.log(tempX);
+          setXAxis(tempX[0]);
           setData(tempData);
           setLoading(false);
         }
@@ -101,23 +103,23 @@ function ReputationChart() {
 
   const Shadow = ({ line }) => (
     <Path
-        key={'shadow'}
-        y={2}
-        d={line}
-        fill={'none'}
-        strokeWidth={4}
-        stroke={'rgba(134, 65, 244, 0.2)'}
+      key={"shadow"}
+      y={2}
+      d={line}
+      fill={"none"}
+      strokeWidth={4}
+      stroke={"rgba(134, 65, 244, 0.2)"}
     />
-)
+  );
 
   function formDataObject(data) {
-    let kol = {}
+    let kol = {};
     if (data.length > 0) {
-        kol = state.influencers.find(obj => obj.id == data[0].kolId);
+      kol = state.influencers.find((obj) => obj.id == data[0].kolId);
     }
     var dataObject = {
-        data: data.map(({ rating }) => rating),
-        svg: { stroke: kol.colorCode }, // random color
+      data: data.map(({ rating }) => rating),
+      svg: { stroke: kol.colorCode }, // random color
     };
     return dataObject;
   }
@@ -150,7 +152,12 @@ function ReputationChart() {
                 style={{ flex: 1 }}
                 data={data}
                 curve={shape.curveMonotoneX} //curve line
-                contentInset={{ top: apx(20), bottom: apx(20), left: apx(10), right: apx(10) }}
+                contentInset={{
+                  top: apx(20),
+                  bottom: apx(20),
+                  left: apx(10),
+                  right: apx(10),
+                }}
                 animate={null}
                 animationDuration={0}
                 strokeWidth={undefined}
@@ -169,7 +176,9 @@ function ReputationChart() {
               height: apx(30),
             }}
             data={data[0].data}
-            formatLabel={(value, index) => ( index % 2 == 1 ? null :xAxis[index])}
+            formatLabel={(value, index) =>
+              index % 2 == 1 ? null : xAxis[index]
+            }
             svg={{
               fontSize: apx(16),
               fill: "#617485",
@@ -177,7 +186,7 @@ function ReputationChart() {
               y: 10,
               x: 10,
             }}
-            contentInset={{  left: apx(20)}}
+            contentInset={{ left: apx(20) }}
           />
         </View>
       )}
@@ -193,6 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     border: "1px solid #c6c6c6",
     borderRadius: "8px",
-    boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)"
+    boxShadow:
+      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
   },
 });

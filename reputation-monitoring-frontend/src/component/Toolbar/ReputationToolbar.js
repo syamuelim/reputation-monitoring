@@ -82,13 +82,13 @@ const ReputationToolbar = () => {
   const startDateChange = (value) => {
     dispatch({
       type: "SET_START_DATE",
-      payload: { startDate: value.toISOString() },
+      payload: { startDate: value.format('YYYY-MM-DDTHH:mm:ss') },
     });
   };
   const endDateChange = (value) => {
     dispatch({
       type: "SET_END_DATE",
-      payload: { endDate: value.toISOString() },
+      payload: { endDate: value.format('YYYY-MM-DDTHH:mm:ss') },
     });
   };
   return (
@@ -143,7 +143,7 @@ const ReputationToolbar = () => {
                   ".MuiOutlinedInput-notchedOutline": { border: "none" },
                 }}
                 onChange={startDateChange}
-                defaultValue={dayjs()}
+                defaultValue={dayjs().add(-1, 'year')}
               />
               <ArrowRightAltIcon></ArrowRightAltIcon>
               <MobileDatePicker

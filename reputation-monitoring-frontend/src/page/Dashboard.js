@@ -51,12 +51,12 @@ const DashboardScreen = ({ navigation }) => {
           <Grid xs={12} sm={12} md={4} container rowGap={1}>
             <Grid xs={12} sm={12} md={6}>
               <InstagramPostListView
-                instagramUserId={152}
+                instagramUserId={302}
               ></InstagramPostListView>
             </Grid>
             <Grid xs={12} sm={12} md={6}>
               <YoutubeVideolistView
-                youtubeChannelId={"UCNdIxz7txarVwbq3BvUJTUQ"}
+                youtubeChannelId={"UCEpFoWeCMCo5z3EvWaz6hQQ"}
               ></YoutubeVideolistView>
             </Grid>
           </Grid>

@@ -39,7 +39,7 @@ public class YoutubeChannel {
 	@Column(name = "icon_url")
 	private String iconUrl;
 
-	@OneToMany(mappedBy = "youtubeChannel", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "youtubeChannel")
 	@JsonManagedReference
 	@OrderBy("dislike DESC, likes ASC")
     private Set<YoutubeVideo> youtubeVideos = new HashSet<YoutubeVideo>();

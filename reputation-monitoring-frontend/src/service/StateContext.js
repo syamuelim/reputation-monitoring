@@ -1,12 +1,13 @@
 // InfluencerContext.js
 import React, { createContext, useContext, useReducer } from "react";
+import dayjs from "dayjs";
 
 const InfluencerContext = createContext();
 
 const initialState = {
   influencers: [],
-  startDate: new Date().toISOString(),
-  endDate: new Date().toISOString(),
+  startDate: dayjs().add(-1, 'year').format('YYYY-MM-DDTHH:mm:ss'),
+  endDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
 };
 
 const influencerReducer = (state, action) => {

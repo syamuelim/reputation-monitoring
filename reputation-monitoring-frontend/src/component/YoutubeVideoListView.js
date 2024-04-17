@@ -29,7 +29,7 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
       await youtubeService.getExternalYoutbeChannelComments({
         keyword: youtubeChannelId,
         IsByChannelId: true,
-        maxResult: 2,
+        maxResult: 10,
         // createdFrom: null,
         // createdTo: null
       });
@@ -41,8 +41,8 @@ const YoutubeVideoListView = ({ youtubeChannelId }) => {
     <SafeAreaView>
       <Box
         sx={{
-          maxHeight: 670,
-          height: 670,
+          maxHeight: 738,
+          height: 738,
           width: "100%",
           bgcolor: "background.paper",
           overflowY: "scroll",
