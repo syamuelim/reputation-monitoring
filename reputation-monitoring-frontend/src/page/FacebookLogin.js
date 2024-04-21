@@ -35,7 +35,6 @@ const FacebookLoginScreen = ({ navigation }) => {
   useEffect(() => {
     if (response && response.type === "success" && response.authentication) {
       (async () => {
-        console.log(response)
         const userInfoResponse = await fetch(
           `https://graph.facebook.com/me?fields=id,name,email,birthday,picture.type(large)&access_token=${response.authentication.accessToken}`
         );

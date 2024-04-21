@@ -8,6 +8,7 @@ const initialState = {
   influencers: [],
   startDate: dayjs().add(-1, 'year').format('YYYY-MM-DDTHH:mm:ss'),
   endDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
+  refreshKey: 0,
 };
 
 const influencerReducer = (state, action) => {
@@ -43,6 +44,11 @@ const influencerReducer = (state, action) => {
       return {
         ...state,
         endDate: action.payload.endDate,
+      };   
+    case "UPDATE_KEY":
+      return {
+        ...state,
+        refreshKey: state.refreshKey + 1,
       };
     default:
       return state;

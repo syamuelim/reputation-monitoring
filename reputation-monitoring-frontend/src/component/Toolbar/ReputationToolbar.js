@@ -59,7 +59,7 @@ const ReputationToolbar = () => {
         const response = await youtubeService.getExternalYoutbeChannelComments({
           keyword: item.youtubeChannel.channelId,
           IsByChannelId: true,
-          maxResult: 1,
+          maxResult: 10,
         });
         result.push({
           kolId: item.id,
@@ -76,6 +76,10 @@ const ReputationToolbar = () => {
   };
 
   const handleCloseStatus = () => {
+    dispatch({
+      type: "UPDATE_KEY",
+      payload: {  },
+    });
     setOpenStatus(false);
   };
 

@@ -224,21 +224,6 @@ const AudienceToolbar = () => {
                             marginRight: "8px",
                         }}
                     >
-                        <Button
-                            color="coreOrange"
-                            variant="contained"
-                            size="small"
-                            sx={{ borderRadius: "16px" }}
-                            onClick={handleGetLatestData}
-                        >
-                            <SearchIcon
-                                sx={{
-                                    alignSelf: "center",
-                                    color: "coreOrange",
-                                }}
-                            ></SearchIcon>
-                            Get New Data
-                        </Button>
                     </Box>
                 </Box>
                 <Dialog open={openStatus} onClose={handleCloseStatus}>

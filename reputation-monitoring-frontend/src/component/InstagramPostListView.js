@@ -6,33 +6,39 @@ import Grid from "@mui/system/Unstable_Grid";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
 import Pagination from "@mui/material/Pagination";
+import { useInfluencerContext } from "../service/StateContext";
 
 import * as instagramService from "../service/InstagramService";
 import noImg from "/assets/no_image.png";
 
-const InstagramPostListView = ({ instagramUserId }) => {
+const InstagramPostListView = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [itemPerPage, setItemPerPage] = useState(6);
   const [total, setTotal] = useState(0);
+  const { state, dispatch } = useInfluencerContext();
 
   useEffect(() => {
-    loadInstagramPostById(instagramUserId, page, itemPerPage);
+    loadInstagramPostById(state.i, page, itemPerPage);
   }, []);
 
   useEffect(() => {
-    loadInstagramPostById(instagramUserId, page, itemPerPage);
+    loadInstagramPostById(page, itemPerPage);
+  }, [state.influencers]);
+
+  useEffect(() => {
+    loadInstagramPostById( page, itemPerPage);
   }, [page]);
 
-  let loadInstagramPostById = async (instagramUserId) => {
+  let loadInstagramPostById = async () => {
     // find reputation data
     const instagramPostResponse = await instagramService.getInstagramPostPyId(
-      instagramUserId,
+      state.influencers.filter(x => x.selected == true).at(-1).instagramId,
       page,
       itemPerPage
     );
     const instagramPostCountResponse =
-      await instagramService.getInstagramPostCountById(instagramUserId);
+      await instagramService.getInstagramPostCountById(state.influencers.filter(x => x.selected == true).at(-1).instagramId);
     setPosts(instagramPostResponse.data);
     setTotal(Math.ceil(instagramPostCountResponse.data / itemPerPage));
   };
@@ -123,7 +129,8 @@ const InstagramPostListView = ({ instagramUserId }) => {
                             borderRadius: "8px",
                             border: "1px solid #c6c6c6",
                           }}
-                          src={post.mediaUrl}
+                          // src={post.medianoImgUrl}
+                          src={noImg}
                           alt="Cannot display video"
                         />
                       )

@@ -11,29 +11,29 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
-
+import { useInfluencerContext } from "../service/StateContext";
 import * as youtubeService from "../service/YoutubeService";
 import noImg from "/assets/no_image.png";
 
-const YoutubeVideoListView = ({ youtubeChannelId }) => {
+const YoutubeVideoListView = ({  }) => {
   const [youtubeComments, setYoutubeComments] = useState([]);
   const [nextPage, setNextPage] = useState(null);
+  const { state, dispatch } = useInfluencerContext();
 
   useEffect(() => {
-    loadYoutubeComments(youtubeChannelId);
-  }, [youtubeChannelId]);
+    loadYoutubeComments();
+  }, [state.influencers]);
 
-  let loadYoutubeComments = async (youtubeChannelId) => {
+  let loadYoutubeComments = async () => {
     // find reputation data
     const youtubeCommentsResponse =
       await youtubeService.getExternalYoutbeChannelComments({
-        keyword: youtubeChannelId,
+        keyword: state.influencers.filter(x => x.selected == true).at(-1).youtubeChannel.channelId,
         IsByChannelId: true,
         maxResult: 10,
         // createdFrom: null,
         // createdTo: null
       });
-    console.log(youtubeCommentsResponse.data.items);
     setYoutubeComments(youtubeCommentsResponse.data.items);
   };
 

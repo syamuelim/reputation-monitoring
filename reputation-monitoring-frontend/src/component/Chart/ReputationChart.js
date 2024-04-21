@@ -40,6 +40,15 @@ function ReputationChart() {
       "2024-01-01T00:00:00"
     );
   }, [state.influencers]);
+  
+  useEffect(() => {
+    setLoading(true);
+    loadReputationById(
+      ["1", "54"],
+      "2023-01-01T00:00:00",
+      "2024-01-01T00:00:00"
+    );
+  }, [state.refreshKey]);
 
   let loadReputationById = async (influencerIds, startDate, endDate) => {
     var tempData = [];
@@ -77,7 +86,6 @@ function ReputationChart() {
           }).length
         ) {
           // set the data to the table
-          console.log(tempX);
           setXAxis(tempX[0]);
           setData(tempData);
           setLoading(false);
