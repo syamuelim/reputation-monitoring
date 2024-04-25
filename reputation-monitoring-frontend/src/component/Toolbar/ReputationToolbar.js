@@ -24,6 +24,7 @@ import * as reputationService from "../../service/ReputationService";
 import * as youtubeService from "../../service/YoutubeService";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import axios from "axios";
 
 const ReputationToolbar = () => {
   const [openStatus, setOpenStatus] = React.useState(false);
@@ -34,6 +35,7 @@ const ReputationToolbar = () => {
 
   const createEntity = async (result) => {
     const commentData = [];
+    const promiseList = []
     for (let i = 0; i < result.length; i++) {
       const createResponse = await youtubeService.youtubeResponseCreate(
         result[i].youtubeChannelId,
@@ -41,14 +43,20 @@ const ReputationToolbar = () => {
           json: result[i].json,
         }
       );
-      const res = await reputationService.createReputation({
+      promiseList.push(reputationService.createReputation({
         kolId: result[i].kolId,
         youtubeChannelId: result[i].youtubeChannelId,
         youtubeResponseId: createResponse.data.id,
         date: result[i].start
-      });
+      }))
+      
     }
-    handleCloseStatus();
+    console.log(promiseList)
+    axios.all(promiseList).then(reslist => {
+      handleCloseStatus();
+    }).catch(err => {
+      console.error(err)
+    })
   };
 
   const handleGenerateReputation = async () => {
@@ -77,7 +85,7 @@ const ReputationToolbar = () => {
           const response = await youtubeService.getExternalYoutbeChannelComments({
             keyword: videos.data.items[0].id.videoId,
             IsByChannelId: false,
-            maxResult: 50,
+            maxResult: 2,
           });
           result.push({
             kolId: item.id,
