@@ -6,7 +6,7 @@ const InfluencerContext = createContext();
 
 const initialState = {
   influencers: [],
-  startDate: dayjs().add(-1, 'year').format('YYYY-MM-DDTHH:mm:ss'),
+  startDate: dayjs().add(-1, 'month').format('YYYY-MM-DDTHH:mm:ss'),
   endDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
   refreshKey: 0,
 };

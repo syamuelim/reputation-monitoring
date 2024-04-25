@@ -30,6 +30,7 @@ def category(request):
     kol_id = request.data.get('kolId')
     youtube_response_id = request.data.get('youtubeResponseId')
     youtube_channel_id = request.data.get('youtubeChannelId')
+    date = request.data.get('date')
     # get the youtube comments data json
     # remarks: 
     #   1. the json data can be retrieved by youtube_response_serializer.data.get('response')
@@ -80,7 +81,7 @@ def category(request):
 
     reputation_score = 3
     # save the reputation data to db
-    reputation_result = Reputation.objects.create( kol_id=kol_id, rating = reputation_score, status ="ACTIVE", reputation_at= datetime.now(), created_at= datetime.now())
+    reputation_result = Reputation.objects.create( kol_id=kol_id, rating = reputation_score, status ="ACTIVE", reputation_at= date, created_at= datetime.now())
     reputation_result.save()
     return Response(status=status.HTTP_201_CREATED)
 
@@ -94,6 +95,7 @@ def sentiment(request):
     kol_id = request.data.get('kolId')
     youtube_response_id = request.data.get('youtubeResponseId')
     youtube_channel_id = request.data.get('youtubeChannelId')
+    date = request.data.get('date')
     
     # get the youtube comments data json
     # remarks: 
@@ -111,7 +113,7 @@ def sentiment(request):
     # TODO generate the reputation
     device = 'cpu'
     json_data = youtube_response_serializer.data.get('response')
-    preprocessed_comment_df = preprocess_data(json_data)
+    preprocessed_comment_df = preprocess_json_file(json_data)
 
     # load tokenizer and model
     tokenizer = AutoTokenizer.from_pretrained('nlptown/bert-base-multilingual-uncased-sentiment')
@@ -140,12 +142,19 @@ def sentiment(request):
         sentiment_results.extend(sentiment_result)
 
     preprocessed_comment_df['Predicted_Sentiment'] = sentiment_results
+    max_count =  max(set(sentiment_results), key=sentiment_results.count)
+    reputation_score = 3
+    count_p = sentiment_results.count('Positive')
+    count_neg = sentiment_results.count('Negative')
+    count_na = sentiment_results.count('Neutral')
 
+    percent_of_p = count_p / len(sentiment_results)
+    percent_of_neg = count_neg / len(sentiment_results)
+    reputation_score = percent_of_p - percent_of_neg
     # preprocessed_comment_df is ready
 
-    reputation_score = 5
     # save the reputation data to db
-    reputation_result = Reputation.objects.create( kol_id=kol_id, rating = reputation_score, status ="ACTIVE", reputation_at= datetime.now(), created_at= datetime.now())
+    reputation_result = Reputation.objects.create( kol_id=kol_id, rating = reputation_score, status ="ACTIVE", reputation_at= date, created_at= datetime.now())
     reputation_result.save()
     return Response(status=status.HTTP_201_CREATED)
 
@@ -159,7 +168,7 @@ def channel(request):
     kol_id = request.data.get('kolId')
     youtube_response_id = request.data.get('youtubeResponseId')
     youtube_channel_id = request.data.get('youtubeChannelId')
-    
+    date = request.data.get('date')
     # get the youtube comments data json
     # remarks: 
     #   1. the json data can be retrieved by youtube_response_serializer.data.get('response')
@@ -205,7 +214,6 @@ def channel(request):
     preprocessed_comment_df['Predicted_Association'] = output_catergory
 
     # preprocessed_comment_df is ready
-    
     reputation_score = 5
     # save the reputation data to db
     reputation_result = Reputation.objects.create( kol_id=kol_id, rating = reputation_score, status ="ACTIVE", reputation_at= datetime.now(), created_at= datetime.now())

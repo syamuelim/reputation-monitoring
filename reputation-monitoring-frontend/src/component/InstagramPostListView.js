@@ -129,8 +129,8 @@ const InstagramPostListView = () => {
                             borderRadius: "8px",
                             border: "1px solid #c6c6c6",
                           }}
-                          // src={post.medianoImgUrl}
-                          src={noImg}
+                          src={post.medianoImgUrl}
+                          // src={noImg}
                           alt="Cannot display video"
                         />
                       )

@@ -30,7 +30,7 @@ const ReputationToolbar = () => {
 
   const { state, dispatch } = useInfluencerContext();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const createEntity = async (result) => {
     const commentData = [];
@@ -45,6 +45,7 @@ const ReputationToolbar = () => {
         kolId: result[i].kolId,
         youtubeChannelId: result[i].youtubeChannelId,
         youtubeResponseId: createResponse.data.id,
+        date: result[i].start
       });
     }
     handleCloseStatus();
@@ -52,20 +53,40 @@ const ReputationToolbar = () => {
 
   const handleGenerateReputation = async () => {
     handleClickOpenStatus();
-    let result = [];
+    let result = [];       
+    console.log('video')
     for (let i = 0; i < state.influencers.length; i++) {
       let item = state.influencers[i];
+      console.log(item)
       if (item.selected) {
-        const response = await youtubeService.getExternalYoutbeChannelComments({
-          keyword: item.youtubeChannel.channelId,
-          IsByChannelId: true,
-          maxResult: 10,
-        });
-        result.push({
-          kolId: item.id,
-          youtubeChannelId: item.youtubeChannel.id,
-          json: JSON.stringify(response.data),
-        });
+        var start = state.startDate
+        var end = state.endDate
+        const different = dayjs(end).diff(start, 'month')
+        console.log(different)
+        for (var j = 0; j < different; j++) {
+          const videos = await youtubeService.getExternalVideo({
+            keyword: item.youtubeChannel.channelId,
+            maxResult: 1,
+            createdFrom: dayjs(start).format('YYYY-MM-DDTHH:mm:ssZ'),
+            createTo: dayjs(end).format('YYYY-MM-DDTHH:mm:ssZ')
+          });
+          if (videos.data.items.length ==0 ){
+            continue
+          }
+          console.log(videos.data)
+          const response = await youtubeService.getExternalYoutbeChannelComments({
+            keyword: videos.data.items[0].id.videoId,
+            IsByChannelId: false,
+            maxResult: 50,
+          });
+          result.push({
+            kolId: item.id,
+            youtubeChannelId: item.youtubeChannel.id,
+            json: JSON.stringify(response.data),
+            start: start
+          });
+          start = dayjs(start).add(1, 'month')
+        }
       }
     }
     createEntity(result);
@@ -78,7 +99,7 @@ const ReputationToolbar = () => {
   const handleCloseStatus = () => {
     dispatch({
       type: "UPDATE_KEY",
-      payload: {  },
+      payload: {},
     });
     setOpenStatus(false);
   };
@@ -147,7 +168,7 @@ const ReputationToolbar = () => {
                   ".MuiOutlinedInput-notchedOutline": { border: "none" },
                 }}
                 onChange={startDateChange}
-                defaultValue={dayjs().add(-1, 'year')}
+                defaultValue={dayjs().add(-1, 'month')}
               />
               <ArrowRightAltIcon></ArrowRightAltIcon>
               <MobileDatePicker

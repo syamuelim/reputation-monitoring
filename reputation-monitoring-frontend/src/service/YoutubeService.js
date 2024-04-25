@@ -4,12 +4,19 @@ const youtubeRootPath = baseUrl + "api/youtube_channel/";
 const youtubeExternalPath = youtubeRootPath + "external/channel";
 const youtubeExternalCommentPath =  youtubeExternalPath + "/comments";
 const youtubeExternalChannelPath = youtubeExternalPath + "/Details";
+const youtubeExternalVideoPath = youtubeExternalPath + "/videos";
 const youtubeCreatePath = youtubeRootPath + "create";
 const youtubeGetIdPath = youtubeRootPath + ":id";
 const youtubeResponsePath = youtubeGetIdPath + "/response";
 
 export const getYoutbeChannel = () => {
   return axios.get(youtubeRootPath);
+};
+
+export const getExternalVideo = (request) => {
+  return axios.get(youtubeExternalVideoPath, {
+    params: request,
+  });
 };
 
 export const getExternalYoutbeChannels = (request) => {
